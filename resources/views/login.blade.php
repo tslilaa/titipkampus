@@ -73,6 +73,7 @@
         <div class="bg-[#f9fafb] rounded-t-[2.5rem] px-8 pt-8 pb-10 z-20 relative shadow-[0_-10px_40px_rgba(0,0,0,0.15)] flex-shrink-0">
 
             <form action="/login" method="POST">
+                @csrf
 
                 <!-- NIM -->
                 <div class="mb-5">

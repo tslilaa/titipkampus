@@ -1,9 +1,28 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - TitipKampus</title>
+
+    @vite('resources/css/app.css')
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+    </style>
+</head>
+
 <!-- DASHBOARD -->
-<body class="bg-gray-100 flex items-center justify-center min-h-screen overflow-hidden">
-
+<body class="bg-gray-100 flex items-center justify-center min-h-screen py-4">
     <!-- PHONE -->
-    <div class="w-full sm:max-w-[420px] h-[100dvh] sm:h-[850px] bg-[#FAFAFA] relative overflow-hidden sm:rounded-[3rem] sm:shadow-2xl px-6 pt-14 pb-8 flex flex-col">
-
+    <div
+        style="max-width:420px;"
+        class="w-full h-[95vh] bg-[#FAFAFA] relative overflow-y-auto rounded-[3rem] shadow-2xl px-6 pt-14 pb-32 flex flex-col"
+        
         <!-- TOPBAR -->
         <div class="flex items-center justify-between mb-8">
 
@@ -220,7 +239,7 @@
         </div>
 
         <!-- MENU -->
-        <div>
+        <div class="mb-8">
 
             <h2 class="text-2xl font-bold text-gray-900 mb-5">
                 Menu Request
@@ -284,3 +303,5 @@
     </div>
 
 </body>
+
+</html>
