@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ChatController;
+use App\Http\Controllers\RequestController;
+
 
 Route::get('/', [AuthController::class, 'showLogin'])
     ->name('login');
@@ -31,9 +33,6 @@ Route::get('/detail-req-proses', function () {
     return view('detail-req-proses');
 });
 
-Route::get('/chat', function () {
-    return view('chat');
-});
 
 Route::get('/track-lokasi', function () {
     return view('track-lokasi');
@@ -55,9 +54,7 @@ Route::get('/notifikasi', function () {
     return view('notifikasi');
 });
 
-Route::get('/daftar-request', function () {
-    return view('daftar-request');
-});
+
 
 Route::get('/riwayat', function () {
     return view('riwayat');
@@ -70,6 +67,10 @@ Route::get('/profil', function () {
 Route::get('/pengaturan', function () {
     return view('pengaturan');
 });
+
+Route::get('/daftar-request', [RequestController::class, 'index'])
+    ->middleware('auth')
+    ->name('request.index');
 
 
 Route::middleware('auth')->group(function () {

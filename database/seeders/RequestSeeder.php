@@ -19,5 +19,27 @@ class RequestSeeder extends Seeder
             'nominal_tip' => 10000,
             'status' => 'Taken',
         ]);
+
+        Request::create([
+            'pemohon_id' => 1,
+            'runner_id' => 2,
+            'kategori_id' => 2,
+            'lokasi_awal_id' => 2,
+            'lokasi_tujuan_id' => 3,
+            'deskripsi_barang' => 'Titip buku skripsi',
+            'nominal_tip' => 15000,
+            'status' => 'Pending',
+        ]);
+
+        Request::create([
+            'pemohon_id' => 1,
+            'runner_id' => 2,
+            'kategori_id' => 3,
+            'lokasi_awal_id' => 3,
+            'lokasi_tujuan_id' => 4,
+            'deskripsi_barang' => 'Titip paket sepatu',
+            'nominal_tip' => 20000,
+            'status' => 'Done',
+        ]);
     }
 }
