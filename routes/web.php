@@ -6,6 +6,8 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RequestHistoryController;
+use App\Http\Controllers\RequestController;
+
 
 Route::get('/', [AuthController::class, 'showLogin'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
@@ -64,6 +66,22 @@ Route::get('/notifikasi', function () {
     return view('notifikasi');
 });
 
-Route::get('/daftar-request', function () {
-    return view('daftar-request');
+
+Route::get('/daftar-request', [RequestController::class, 'index'])
+    ->middleware('auth')
+    ->name('request.index');
+
+
+Route::middleware('auth')->group(function () {
+
+    Route::get('/chat', [ChatController::class, 'index'])
+        ->name('chat.index');
+
+    Route::get('/chat/{conversation}', [ChatController::class, 'show'])
+        ->name('chat.show');
+
+    Route::post('/chat/{conversation}/send', [ChatController::class, 'send'])
+        ->name('chat.send');
+
 });
+

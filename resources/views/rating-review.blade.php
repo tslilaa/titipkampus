@@ -154,10 +154,10 @@
 
                     <!-- CARD -->
                     <div class="bg-white
-                                rounded-[30px]
-                                p-5
-                                border border-slate-100
-                                shadow-[0_8px_24px_rgba(15,23,42,0.04)]">
+                            rounded-[30px]
+                            p-5
+                            border border-slate-100
+                            shadow-[0_8px_24px_rgba(15,23,42,0.04)]">
 
                         <div class="flex justify-between gap-4">
 
@@ -307,11 +307,16 @@
                 </div>
 
                 <!-- CARD -->
-                <div class="bg-white
-                            rounded-[30px]
-                            p-5
-                            border border-slate-100
-                            shadow-[0_8px_24px_rgba(15,23,42,0.04)]">
+                <div
+                    onclick="editRating()"
+                    class="bg-white
+                        rounded-[30px]
+                        p-5
+                        cursor-pointer
+                        border border-slate-100
+                        hover:shadow-md
+                        hover:scale-[1.01]
+                        transition duration-200">
 
                     <div class="flex justify-between">
 
@@ -447,6 +452,32 @@ function showTab(tab){
 
         btnDiberikan.className =
             'flex-1 py-3.5 rounded-[18px] bg-gradient-to-r from-[#7C3AED] to-[#60A5FA] text-white font-semibold transition';
+    }
+}
+
+function editRating(){
+
+    // simulasi waktu request selesai
+    const selesaiAt =
+        new Date('2026-06-02T10:00:00');
+
+    const sekarang =
+        new Date();
+
+    const diffHours =
+        (sekarang - selesaiAt)
+        / (1000 * 60 * 60);
+
+    if(diffHours <= 24){
+
+        window.location.href =
+            '/rating?edit=true';
+
+    }else{
+
+        alert(
+            'Batas edit penilaian sudah lewat (maksimal 1x24 jam)'
+        );
     }
 }
 

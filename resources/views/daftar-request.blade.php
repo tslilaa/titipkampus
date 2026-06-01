@@ -18,10 +18,11 @@
     </style>
 </head>
 
+
 <body class="bg-gray-100 flex justify-center items-center min-h-screen py-4">
 
     <!-- PHONE -->
-    <div class="w-full max-w-[420px] h-[95vh]
+    <div class="relative w-full max-w-[420px] h-[95vh]
                 bg-[#FAFAFA]
                 rounded-[3rem]
                 shadow-2xl
@@ -54,41 +55,60 @@
             <!-- TAB -->
             <div class="flex gap-2 overflow-x-auto pb-1 mb-5">
 
-                <button class="px-4 py-2 rounded-xl
-                               bg-gradient-to-r
-                               from-[#7C3AED]
-                               to-[#60A5FA]
-                               text-white text-sm font-medium shrink-0">
+                <a
+                    href="{{ route('request.index') }}"
+                    class="px-4 py-2 rounded-xl text-sm font-medium shrink-0
+                    {{ request('status') == null
+                        ? 'bg-gradient-to-r from-[#7C3AED] to-[#60A5FA] text-white'
+                        : 'bg-gray-100 text-gray-500' }}">
+
                     Semua
-                </button>
 
-                <button class="px-4 py-2 rounded-xl
-                               bg-gray-100 text-gray-500
-                               text-sm font-medium shrink-0">
+                </a>
+
+                <a
+                    href="{{ route('request.index',['status'=>'Pending']) }}"
+                    class="px-4 py-2 rounded-xl text-sm font-medium shrink-0
+                    {{ request('status') == 'Pending'
+                        ? 'bg-gradient-to-r from-[#7C3AED] to-[#60A5FA] text-white'
+                        : 'bg-gray-100 text-gray-500' }}">
+
                     Menunggu
-                </button>
 
-                <button class="px-4 py-2 rounded-xl
-                               bg-gray-100 text-gray-500
-                               text-sm font-medium shrink-0">
+                </a>
+
+                <a
+                    href="{{ route('request.index',['status'=>'Taken']) }}"
+                    class="px-4 py-2 rounded-xl text-sm font-medium shrink-0
+                    {{ request('status') == 'Taken'
+                        ? 'bg-gradient-to-r from-[#7C3AED] to-[#60A5FA] text-white'
+                        : 'bg-gray-100 text-gray-500' }}">
+
                     Diproses
-                </button>
 
-                <button class="px-4 py-2 rounded-xl
-                               bg-gray-100 text-gray-500
-                               text-sm font-medium shrink-0">
+                </a>
+
+                <a
+                    href="{{ route('request.index',['status'=>'Done']) }}"
+                    class="px-4 py-2 rounded-xl text-sm font-medium shrink-0
+                    {{ request('status') == 'Done'
+                        ? 'bg-gradient-to-r from-[#7C3AED] to-[#60A5FA] text-white'
+                        : 'bg-gray-100 text-gray-500' }}">
+
                     Selesai
-                </button>
+
+                </a>
 
             </div>
 
             <!-- FILTER -->
-            <div class="flex justify-between items-center mb-6">
+            <div class="flex justify-between items-center mb-6 gap-3">
 
-                <button class="flex items-center gap-2
-                               border border-gray-200
-                               px-4 py-2 rounded-xl
-                               bg-white shadow-sm">
+                <button
+                    class="flex items-center gap-2
+                    border border-gray-200
+                    px-4 py-2 rounded-xl
+                    bg-white shadow-sm">
 
                     <span>☷</span>
                     <span class="font-medium text-sm">
@@ -97,148 +117,106 @@
 
                 </button>
 
-                <button class="w-11 h-11 rounded-xl
-                               border border-gray-200
-                               bg-white shadow-sm
-                               flex items-center justify-center text-lg">
+                <form
+                    action="{{ route('request.index') }}"
+                    method="GET"
+                    class="flex items-center gap-2">
 
-                    🔍
-                </button>
+                    @if(request('status'))
+                        <input
+                            type="hidden"
+                            name="status"
+                            value="{{ request('status') }}">
+                    @endif
+
+                    <input
+                        type="text"
+                        name="search"
+                        value="{{ request('search') }}"
+                        placeholder="Cari request..."
+                        class="w-40 px-3 py-2 rounded-xl border border-gray-200 text-sm">
+
+                    <button
+                        type="submit"
+                        class="w-11 h-11 rounded-xl
+                            border border-gray-200
+                            bg-white shadow-sm
+                            flex items-center justify-center text-lg">
+
+                        🔍
+
+                    </button>
+
+                </form>
 
             </div>
-
         </div>
 
-        <!-- LIST -->
         <div class="flex-1 overflow-y-auto px-6 pb-32 space-y-5">
 
-            <!-- ITEM -->
-            <div class="border-b border-gray-200 pb-5">
+        @foreach($requests as $request)
 
-                <div class="flex gap-4">
+            @php
 
-                    <img
-                        src="https://cdn-icons-png.flaticon.com/512/1046/1046784.png"
-                        class="w-20 h-20 rounded-2xl object-cover shadow-sm">
+                $icon = match($request->kategori->nama_kategori) {
 
-                    <div class="flex-1">
+                    'Makanan' => '🍔',
+                    'Minuman' => '🥤',
+                    'Dokumen' => '📄',
+                    'Paket' => '📦',
+                    'Obat' => '💊',
 
-                        <div class="flex justify-between items-start">
+                    default => '🛍️'
+                };
 
-                            <div>
+            @endphp
 
-                                <h3 class="font-bold text-gray-900">
-                                    Titip mie ayam
-                                </h3>
+        <div class="border-b border-gray-200 pb-5">
 
-                                <p class="text-sm text-gray-400 mt-1">
-                                    Dari Kantin FITK → Kos Putri
-                                </p>
+            <div class="flex gap-4">
 
-                            </div>
-
-                            <span class="px-3 py-1 rounded-xl
-                                       text-xs font-semibold
-                                       bg-orange-100 text-orange-500">
-
-                                Menunggu
-                            </span>
-
-                        </div>
-
-                        <h2 class="font-bold text-xl mt-3">
-                            Rp 15.000
-                        </h2>
-
-                    </div>
-
+                <div class="w-20 h-20 rounded-2xl bg-gray-100 flex items-center justify-center text-4xl shadow-sm">
+                    {{ $icon }}
                 </div>
+                <div class="flex-1">
 
-            </div>
+                    <div class="flex justify-between items-start">
 
-            <!-- ITEM -->
-            <div class="border-b border-gray-200 pb-5">
+                        <div>
 
-                <div class="flex gap-4">
+                            <h3 class="font-bold text-gray-900">
+                                {{ $request->deskripsi_barang }}
+                            </h3>
 
-                    <img
-                        src="https://cdn-icons-png.flaticon.com/512/2232/2232688.png"
-                        class="w-20 h-20 rounded-2xl object-cover shadow-sm">
-
-                    <div class="flex-1">
-
-                        <div class="flex justify-between items-start">
-
-                            <div>
-
-                                <h3 class="font-bold text-gray-900">
-                                    Titip buku skripsi
-                                </h3>
-
-                                <p class="text-sm text-gray-400 mt-1">
-                                    Dari Perpustakaan → Mahad Putri
-                                </p>
-
-                            </div>
-
-                            <span class="px-3 py-1 rounded-xl
-                                       text-xs font-semibold
-                                       bg-blue-100 text-blue-500">
-
-                                Diproses
-                            </span>
+                            <p class="text-sm text-gray-400 mt-1">
+                                {{ $request->lokasiAwal->nama_lokasi }}
+                                →
+                                {{ $request->lokasiTujuan->nama_lokasi }}
+                            </p>
 
                         </div>
 
-                        <h2 class="font-bold text-xl mt-3">
-                            Rp 10.000
-                        </h2>
+                        @php
+
+                            $statusClass = match($request->status){
+                                'Pending' => 'bg-orange-100 text-orange-500',
+                                'Taken' => 'bg-blue-100 text-blue-500',
+                                'On Way' => 'bg-purple-100 text-purple-500',
+                                'Done' => 'bg-green-100 text-green-600',
+                                default => 'bg-gray-100 text-gray-500'
+                            };
+
+                        @endphp
+
+                        <span class="px-3 py-1 rounded-xl text-xs font-semibold {{ $statusClass }}">
+                            {{ $request->status }}
+                        </span>
 
                     </div>
 
-                </div>
-
-            </div>
-
-            <!-- ITEM -->
-            <div>
-
-                <div class="flex gap-4">
-
-                    <img
-                        src="https://cdn-icons-png.flaticon.com/512/2589/2589903.png"
-                        class="w-20 h-20 rounded-2xl object-cover shadow-sm">
-
-                    <div class="flex-1">
-
-                        <div class="flex justify-between items-start">
-
-                            <div>
-
-                                <h3 class="font-bold text-gray-900">
-                                    Paket Sepatu
-                                </h3>
-
-                                <p class="text-sm text-gray-400 mt-1">
-                                    Dari Lobi Kampus 2 → Kos Putra
-                                </p>
-
-                            </div>
-
-                            <span class="px-3 py-1 rounded-xl
-                                       text-xs font-semibold
-                                       bg-green-100 text-green-600">
-
-                                Selesai
-                            </span>
-
-                        </div>
-
-                        <h2 class="font-bold text-xl mt-3">
-                            Rp 20.000
-                        </h2>
-
-                    </div>
+                    <h2 class="font-bold text-xl mt-3">
+                        Rp {{ number_format($request->nominal_tip,0,',','.') }}
+                    </h2>
 
                 </div>
 
@@ -246,18 +224,24 @@
 
         </div>
 
+    @endforeach
+
+</div>
+
         <!-- FLOAT BUTTON -->
-        <button
+        <a
+            href="/request"
             class="absolute bottom-10 right-10
-                   w-16 h-16 rounded-full
-                   bg-gradient-to-r
-                   from-[#7C3AED]
-                   to-[#60A5FA]
-                   text-white text-5xl
-                   shadow-xl flex items-center justify-center">
+                w-16 h-16 rounded-full
+                bg-gradient-to-r
+                from-[#7C3AED]
+                to-[#60A5FA]
+                text-white text-5xl
+                shadow-xl flex items-center justify-center">
 
             +
-        </button>
+
+        </a>
 
     </div>
 

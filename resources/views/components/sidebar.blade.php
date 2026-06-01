@@ -63,63 +63,75 @@
     <div class="flex-1 overflow-y-auto p-4 space-y-2">
 
         <a href="/dashboard"
-           class="menu-item bg-gradient-to-r from-[#7C3AED] to-[#60A5FA] text-white">
+        class="flex items-center gap-3 px-5 py-4 rounded-[20px] transition
+        {{ request()->is('dashboard')
+                ? 'bg-gradient-to-r from-[#7C3AED] to-[#60A5FA] text-white shadow-lg'
+                : 'text-slate-700 hover:bg-slate-100' }}">
 
-            <svg xmlns="http://www.w3.org/2000/svg"
-                 fill="none"
-                 viewBox="0 0 24 24"
-                 stroke-width="2"
-                 stroke="currentColor"
-                 class="w-5 h-5">
-
-                <path stroke-linecap="round"
-                      stroke-linejoin="round"
-                      d="M3.75 3v18h18"/>
-            </svg>
-
-            Dashboard
+            <span>Dashboard</span>
         </a>
 
         <a href="/request"
-           class="menu-item">
+        class="flex items-center gap-3 px-5 py-4 rounded-[20px] transition
+        {{ request()->is('request')
+                ? 'bg-gradient-to-r from-[#7C3AED] to-[#60A5FA] text-white shadow-lg'
+                : 'text-slate-700 hover:bg-slate-100' }}">
 
-            Buat Request
+            <span>Buat Request</span>
         </a>
 
         <a href="/daftar-request"
-           class="menu-item">
+        class="flex items-center gap-3 px-5 py-4 rounded-[20px] transition
+        {{ request()->is('daftar-request')
+                ? 'bg-gradient-to-r from-[#7C3AED] to-[#60A5FA] text-white shadow-lg'
+                : 'text-slate-700 hover:bg-slate-100' }}">
 
-            Daftar Request
+            <span>Daftar Request</span>
         </a>
 
         <a href="/chat"
-           class="menu-item">
+        class="flex items-center gap-3 px-5 py-4 rounded-[20px] transition
+        {{ request()->is('chat')
+                ? 'bg-gradient-to-r from-[#7C3AED] to-[#60A5FA] text-white shadow-lg'
+                : 'text-slate-700 hover:bg-slate-100' }}">
 
-            Chat
+            <span>Chat</span>
         </a>
 
         <a href="/riwayat"
-           class="menu-item">
+        class="flex items-center gap-3 px-5 py-4 rounded-[20px] transition
+        {{ request()->is('riwayat')
+                ? 'bg-gradient-to-r from-[#7C3AED] to-[#60A5FA] text-white shadow-lg'
+                : 'text-slate-700 hover:bg-slate-100' }}">
 
-            Riwayat
+            <span>Riwayat</span>
         </a>
 
         <a href="/rating-review"
-           class="menu-item">
+        class="flex items-center gap-3 px-5 py-4 rounded-[20px] transition
+        {{ request()->is('rating-review')
+                ? 'bg-gradient-to-r from-[#7C3AED] to-[#60A5FA] text-white shadow-lg'
+                : 'text-slate-700 hover:bg-slate-100' }}">
 
-            Rating
+            <span>Rating</span>
         </a>
 
         <a href="/profil"
-           class="menu-item">
+        class="flex items-center gap-3 px-5 py-4 rounded-[20px] transition
+        {{ request()->is('profil')
+                ? 'bg-gradient-to-r from-[#7C3AED] to-[#60A5FA] text-white shadow-lg'
+                : 'text-slate-700 hover:bg-slate-100' }}">
 
-            Profil
+            <span>Profil</span>
         </a>
 
-        <a href="/pengaturan"
-           class="menu-item">
+        <a href="/Pengaturan"
+        class="flex items-center gap-3 px-5 py-4 rounded-[20px] transition
+        {{ request()->is('Pengaturan')
+                ? 'bg-gradient-to-r from-[#7C3AED] to-[#60A5FA] text-white shadow-lg'
+                : 'text-slate-700 hover:bg-slate-100' }}">
 
-            Pengaturan
+            <span>Pengaturan</span>
         </a>
 
     </div>
