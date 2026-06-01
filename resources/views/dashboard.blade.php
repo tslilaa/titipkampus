@@ -251,7 +251,10 @@
 
 
                 <!-- DALAM PERJALANAN -->
-                <a href="/track-lokasi"
+                @php
+                    $activeRequest = \App\Models\Request::where('pemohon_id', auth()->id())->where('status', 'On Way')->first();
+                @endphp
+                <a href="{{ $activeRequest ? route('track.lokasi', $activeRequest->id) : '#' }}"
                 class="flex items-center justify-between
                         rounded-[24px]
                         px-3 py-3

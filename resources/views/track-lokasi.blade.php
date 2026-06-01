@@ -86,10 +86,10 @@
                     </div>
                     <div>
                         <h3 class="font-semibold text-slate-800 text-[16px]">
-                            Kantin Kampus
+                            {{ $requestModel->lokasiAwal->nama_lokasi ?? 'Lokasi Awal' }}
                         </h3>
                         <p class="text-[13px] text-slate-500">
-                            10.15 WIB - Titipan Diambil
+                            {{ $requestModel->created_at->format('H.i') }} WIB - Titipan Dibuat
                         </p>
                     </div>
                 </div>
@@ -101,7 +101,7 @@
                     </div>
                     <div>
                         <h3 class="font-semibold text-slate-800 text-[16px]">
-                            Kos Putri GP 1
+                            {{ $requestModel->lokasiTujuan->nama_lokasi ?? 'Lokasi Tujuan' }}
                         </h3>
                         <p class="text-[13px] text-slate-500">
                             Lokasi Tujuan
@@ -158,12 +158,12 @@
 
                 <div class="flex items-center gap-4">
                     <img
-                        src="https://randomuser.me/api/portraits/men/32.jpg"
+                        src="{{ $requestModel->runner ? ($requestModel->runner->foto_profil ? asset('storage/'.$requestModel->runner->foto_profil) : 'https://ui-avatars.com/api/?name='.urlencode($requestModel->runner->nama_lengkap).'&background=7C3AED&color=fff') : 'https://ui-avatars.com/api/?name=Belum+Ada' }}"
                         class="w-12 h-12 rounded-full object-cover border-2 border-slate-50">
 
                     <div>
                         <h3 class="font-bold text-slate-800 text-[16px]">
-                            Justin Bieber
+                            {{ $requestModel->runner ? $requestModel->runner->nama_lengkap : 'Belum ada helper' }}
                         </h3>
                         <div class="flex items-center gap-1 mt-0.5">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4 text-yellow-400">
@@ -176,7 +176,7 @@
                 </div>
 
                 <div class="flex gap-2">
-                    <a href="#" class="w-10 h-10 rounded-full bg-violet-50 text-[#7C3AED] hover:bg-violet-100 transition-colors flex items-center justify-center">
+                    <a href="/chat" class="w-10 h-10 rounded-full bg-violet-50 text-[#7C3AED] hover:bg-violet-100 transition-colors flex items-center justify-center">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
                           <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 0 0 2.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-2.896-1.596-5.48-4.08-7.074-6.97l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 0 0-1.091-.852H4.5A2.25 2.25 0 0 0 2.25 4.5v2.25Z" />
                         </svg>
@@ -198,10 +198,17 @@
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
     <script>
+        // Parse Koordinat (Format "lat,lng" di database atau fallback ke Semarang)
+        @php
+            $koordinat = explode(',', $requestModel->lokasiTujuan->koordinat_area ?? '-6.9932,110.4211');
+            $lat = trim($koordinat[0] ?? -6.9932);
+            $lng = trim($koordinat[1] ?? 110.4211);
+        @endphp
+
         // TUJUAN
         const destination = {
-            lat: -6.9932,
-            lng: 110.4211
+            lat: {{ $lat }},
+            lng: {{ $lng }}
         };
 
         // INIT MAP
