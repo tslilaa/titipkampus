@@ -34,8 +34,17 @@ Route::middleware('auth')->group(function () {
 });
 
 // Stubs for remaining views
-Route::get('/request', function () {
-    return view('request');
+Route::middleware('auth')->group(function () {
+
+    Route::get('/request', [RequestController::class, 'create'])
+        ->name('request.create');
+
+    Route::post('/request/store', [RequestController::class, 'store'])
+        ->name('request.store');
+
+    Route::get('/daftar-request', [RequestController::class, 'index'])
+        ->name('request.index');
+
 });
 
 Route::get('/detail-request', function () {
