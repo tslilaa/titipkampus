@@ -49,4 +49,9 @@ class Request extends Model
     {
         return $this->hasOne(Rating::class, 'request_id');
     }
+
+    public function conversation()
+    {
+        return $this->hasOne(Conversation::class);
+    }
 }

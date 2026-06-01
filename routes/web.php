@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ChatController;
 
 Route::get('/', [AuthController::class, 'showLogin'])
     ->name('login');
@@ -69,3 +70,18 @@ Route::get('/profil', function () {
 Route::get('/pengaturan', function () {
     return view('pengaturan');
 });
+
+
+Route::middleware('auth')->group(function () {
+
+    Route::get('/chat', [ChatController::class, 'index'])
+        ->name('chat.index');
+
+    Route::get('/chat/{conversation}', [ChatController::class, 'show'])
+        ->name('chat.show');
+
+    Route::post('/chat/{conversation}/send', [ChatController::class, 'send'])
+        ->name('chat.send');
+
+});
+

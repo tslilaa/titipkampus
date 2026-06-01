@@ -65,181 +65,75 @@
         </div>
 
         <!-- CHAT LIST -->
-        <div class="space-y-6">
+        <div class="space-y-5">
 
-            <!-- ITEM -->
-            <div class="flex justify-between items-center">
+            @forelse($conversations as $conversation)
 
-                <div class="flex items-center gap-4">
+                @php
 
-                    <img
-                        src="https://randomuser.me/api/portraits/men/32.jpg"
-                        class="w-16 h-16 rounded-full object-cover"
-                    >
+                    $currentUserId = auth()->id();
 
-                    <div>
+                    if (
+                        $conversation->request &&
+                        $conversation->request->pemohon_id == $currentUserId
+                    ) {
+                        $otherUser = $conversation->request->runner;
+                    } else {
+                        $otherUser = $conversation->request->pemohon;
+                    }
 
-                        <h3 class="font-bold text-gray-900">
-                            Mark Helper
-                        </h3>
+                    $lastMessage = $conversation->latestMessage;
 
-                        <p class="text-sm text-gray-500">
-                            Alr, ur welcome
+                @endphp
+
+                <a
+                    href="{{ route('chat.show', $conversation->id) }}"
+                    class="flex justify-between items-center hover:bg-gray-50 rounded-2xl p-3 transition"
+                >
+
+                    <div class="flex items-center gap-4">
+
+                        <img
+                            src="https://randomuser.me/api/portraits/men/32.jpg"
+                            alt="User"
+                            class="w-16 h-16 rounded-full object-cover"
+                        >
+
+                        <div>
+
+                            <h3 class="font-bold text-gray-900">
+                                {{ $otherUser?->nama_lengkap ?? 'Pengguna' }}
+                            </h3>
+
+                            <p class="text-sm text-gray-500 truncate max-w-[180px]">
+                                {{ $lastMessage?->message ?? 'Belum ada pesan' }}
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                    <div class="text-right">
+
+                        <p class="text-sm text-gray-400">
+                            {{ $lastMessage?->created_at?->format('H:i') }}
                         </p>
 
                     </div>
 
-                </div>
+                </a>
 
-                <div class="text-right">
+            @empty
 
-                    <p class="text-sm text-gray-400 mb-2">
-                        20.55
+                <div class="text-center py-20">
+
+                    <p class="text-gray-500">
+                        Belum ada percakapan
                     </p>
 
-                    <span class="bg-green-500 text-white text-xs font-bold w-6 h-6 rounded-full flex items-center justify-center ml-auto">
-                        2
-                    </span>
-
                 </div>
 
-            </div>
-
-            <!-- ITEM -->
-            <div class="flex justify-between items-center">
-
-                <div class="flex items-center gap-4">
-
-                    <img
-                        src="https://randomuser.me/api/portraits/women/44.jpg"
-                        class="w-16 h-16 rounded-full object-cover"
-                    >
-
-                    <div>
-
-                        <h3 class="font-bold text-gray-900">
-                            Mingyu Helper
-                        </h3>
-
-                        <p class="text-sm text-gray-500">
-                            Makasih kak
-                        </p>
-
-                    </div>
-
-                </div>
-
-                <p class="text-sm text-gray-400">
-                    15.30
-                </p>
-
-            </div>
-
-            <!-- ITEM -->
-            <div class="flex justify-between items-center">
-
-                <div class="flex items-center gap-4">
-
-                    <img
-                        src="https://randomuser.me/api/portraits/women/12.jpg"
-                        class="w-16 h-16 rounded-full object-cover"
-                    >
-
-                    <div>
-
-                        <h3 class="font-bold text-gray-900">
-                            Selena Titip Paket
-                        </h3>
-
-                        <p class="text-sm text-gray-500">
-                            Sampun mbak
-                        </p>
-
-                    </div>
-
-                </div>
-
-                <div class="text-right">
-
-                    <p class="text-sm text-gray-400 mb-2">
-                        14.45
-                    </p>
-
-                    <span class="bg-green-500 text-white text-xs font-bold w-6 h-6 rounded-full flex items-center justify-center ml-auto">
-                        1
-                    </span>
-
-                </div>
-
-            </div>
-
-            <!-- ITEM -->
-            <div class="flex justify-between items-center">
-
-                <div class="flex items-center gap-4">
-
-                    <img
-                        src="https://randomuser.me/api/portraits/men/19.jpg"
-                        class="w-16 h-16 rounded-full object-cover"
-                    >
-
-                    <div>
-
-                        <h3 class="font-bold text-gray-900">
-                            Justin Titip Sepatu
-                        </h3>
-
-                        <p class="text-sm text-gray-500">
-                            Aman
-                        </p>
-
-                    </div>
-
-                </div>
-
-                <div class="text-right">
-
-                    <p class="text-sm text-gray-400 mb-2">
-                        13.55
-                    </p>
-
-                    <span class="bg-green-500 text-white text-xs font-bold w-6 h-6 rounded-full flex items-center justify-center ml-auto">
-                        1
-                    </span>
-
-                </div>
-
-            </div>
-
-            <!-- ITEM -->
-            <div class="flex justify-between items-center">
-
-                <div class="flex items-center gap-4">
-
-                    <img
-                        src="https://randomuser.me/api/portraits/women/67.jpg"
-                        class="w-16 h-16 rounded-full object-cover"
-                    >
-
-                    <div>
-
-                        <h3 class="font-bold text-gray-900">
-                            Gigi Helper
-                        </h3>
-
-                        <p class="text-sm text-gray-500">
-                            Di luar mba, panas
-                        </p>
-
-                    </div>
-
-                </div>
-
-                <p class="text-sm text-gray-400">
-                    08.30
-                </p>
-
-            </div>
+            @endforelse
 
         </div>
 
