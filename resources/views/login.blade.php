@@ -16,7 +16,7 @@
     </style>
 </head>
 
-<body class="bg-gray-100 flex items-center justify-center min-h-screen overflow-hidden">
+<body class="bg-gray-100 flex items-center justify-center min-h-screen overflow-y-auto">
 
     <!-- Phone Container -->
     <div class="w-full sm:max-w-[420px] h-[100dvh] sm:h-[850px] bg-gradient-to-br from-[#4A7AFF] via-[#8B5CF6] to-[#C850F2] relative overflow-hidden sm:rounded-[3rem] sm:shadow-2xl flex flex-col">
