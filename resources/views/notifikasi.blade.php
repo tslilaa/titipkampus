@@ -60,151 +60,70 @@
     <!-- CONTENT -->
     <div class="flex-1 overflow-y-auto px-6 pb-8 space-y-4">
 
-        <!-- SUCCESS -->
-        <div class="bg-white
-                    rounded-[30px]
-                    p-5
-                    border border-slate-100
-                    shadow-[0_8px_24px_rgba(15,23,42,0.05)]">
+        <div class="flex-1 overflow-y-auto px-6 pb-8 space-y-4">
+            @forelse($notifications as $notif)
 
-            <div class="flex items-center gap-4">
+                <div class="bg-white
+                            rounded-[30px]
+                            p-5
+                            border border-slate-100
+                            shadow-[0_8px_24px_rgba(15,23,42,0.05)]">
 
-                <div class="w-14 h-14 rounded-full
-                            bg-emerald-500
-                            flex items-center justify-center">
+                    <div class="flex items-center gap-4">
 
-                    <svg xmlns="http://www.w3.org/2000/svg"
-                         fill="none"
-                         viewBox="0 0 24 24"
-                         stroke-width="2.5"
-                         stroke="currentColor"
-                         class="w-7 h-7 text-white">
+                        <!-- ICON -->
+                        <div class="w-14 h-14 rounded-full
+                                    flex items-center justify-center
 
-                        <path stroke-linecap="round"
-                              stroke-linejoin="round"
-                              d="M5 13l4 4L19 7"/>
-                    </svg>
+                            @if($notif['status'] === 'selesai')
+                                bg-emerald-500
+                            @elseif($notif['status'] === 'diproses')
+                                bg-violet-500
+                            @else
+                                bg-amber-500
+                            @endif">
+
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke-width="2.5"
+                                stroke="currentColor"
+                                class="w-7 h-7 text-white">
+
+                                <path stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    d="M5 13l4 4L19 7"/>
+                            </svg>
+                        </div>
+
+                        <!-- CONTENT -->
+                        <div class="flex-1">
+
+                            <h3 class="font-semibold text-slate-900 leading-tight">
+                                {{ $notif['title'] }}
+                            </h3>
+
+                            <p class="text-[13px] text-slate-400 mt-1">
+                                {{ $notif['time'] }}
+                            </p>
+
+                        </div>
+                    </div>
                 </div>
 
-                <div class="flex-1">
+            @empty
 
-                    <h3 class="font-semibold text-slate-900 leading-tight">
-                        Request kamu berhasil diselesaikan
-                    </h3>
+                <div class="text-center py-20">
 
-                    <p class="text-[13px] text-slate-400 mt-1">
-                        3 menit lalu
+                    <p class="text-slate-400">
+                        Belum ada notifikasi
                     </p>
-                </div>
-            </div>
-        </div>
 
-        <!-- ITEM -->
-        <a href="/track-lokasi"
-           class="block bg-white
-                  rounded-[30px]
-                  px-5 py-4
-                  border border-slate-100
-                  shadow-[0_8px_24px_rgba(15,23,42,0.04)]
-                  hover:scale-[1.01]
-                  transition">
-
-            <div class="flex items-center gap-4">
-
-                <img src="https://randomuser.me/api/portraits/men/32.jpg"
-                     class="w-14 h-14 rounded-full object-cover shrink-0">
-
-                <div class="flex-1">
-
-                    <h3 class="font-semibold text-slate-800">
-                        Shawn Helper
-                    </h3>
-
-                    <p class="text-[14px] text-slate-500">
-                        sudah sampai di lokasi tujuan
-                    </p>
                 </div>
 
-                <span class="text-[12px] text-slate-400">
-                    5m
-                </span>
-            </div>
-        </a>
+            @endforelse
 
-        <a href="/track-lokasi"
-           class="block bg-white rounded-[30px] px-5 py-4 border border-slate-100 shadow-[0_8px_24px_rgba(15,23,42,0.04)]">
 
-            <div class="flex items-center gap-4">
-
-                <img src="https://randomuser.me/api/portraits/men/32.jpg"
-                     class="w-14 h-14 rounded-full object-cover">
-
-                <div class="flex-1">
-
-                    <h3 class="font-semibold text-slate-800">
-                        Shawn Helper
-                    </h3>
-
-                    <p class="text-[14px] text-slate-500">
-                        perjalanan menuju lokasi tujuan
-                    </p>
-                </div>
-
-                <span class="text-[12px] text-slate-400">
-                    10m
-                </span>
-            </div>
-        </a>
-
-        <a href="/detail-req-proses"
-           class="block bg-white rounded-[30px] px-5 py-4 border border-slate-100 shadow-[0_8px_24px_rgba(15,23,42,0.04)]">
-
-            <div class="flex items-center gap-4">
-
-                <img src="https://randomuser.me/api/portraits/men/32.jpg"
-                     class="w-14 h-14 rounded-full object-cover">
-
-                <div class="flex-1">
-
-                    <h3 class="font-semibold text-slate-800">
-                        Shawn Helper
-                    </h3>
-
-                    <p class="text-[14px] text-slate-500">
-                        mengambil request kamu
-                    </p>
-                </div>
-
-                <span class="text-[12px] text-slate-400">
-                    22m
-                </span>
-            </div>
-        </a>
-
-        <a href="/rating-review"
-           class="block bg-white rounded-[30px] px-5 py-4 border border-slate-100 shadow-[0_8px_24px_rgba(15,23,42,0.04)]">
-
-            <div class="flex items-center gap-4">
-
-                <img src="https://randomuser.me/api/portraits/women/44.jpg"
-                     class="w-14 h-14 rounded-full object-cover">
-
-                <div class="flex-1">
-
-                    <h3 class="font-semibold text-slate-800">
-                        Amanda Rawles
-                    </h3>
-
-                    <p class="text-[14px] text-slate-500">
-                        memberikan rating
-                    </p>
-                </div>
-
-                <span class="text-[12px] text-slate-400">
-                    1j
-                </span>
-            </div>
-        </a>
 
     </div>
 </div>

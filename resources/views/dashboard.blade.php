@@ -100,7 +100,7 @@
                 <div>
 
                     <h1 class="text-[30px] font-extrabold text-slate-900 leading-[1.1] tracking-[-0.5px]">
-                        Halo, Alisha
+                        Halo, {{ auth()->user()->nama_lengkap}}
                     </h1>
 
                     <p class="text-gray-500 text-[14px] mt-1">
@@ -110,11 +110,10 @@
                 </div>
 
                 <!-- PROFILE -->
-                <img 
-                    src="https://i.pravatar.cc/100"
-                    alt="Profile"
-                    class="w-14 h-14 rounded-full object-cover border-4 border-white shadow-md"
-                >
+                <img
+                    src="{{ auth()->user()->foto_profil
+                        ? asset('storage/' . auth()->user()->foto_profil)
+                        : 'https://ui-avatars.com/api/?name=' . urlencode(auth()->user()->nama_lengkap) }}">
 
             </div>
 
@@ -125,7 +124,7 @@
             <div class="bg-gradient-to-br from-[#7C3AED] to-[#A78BFA] rounded-[28px] px-5 py-4 p-5 text-white shadow-[0_8px_24px_rgba(0,0,0,0.08)]">
 
                 <h2 class="text-[42px] font-bold leading-none">
-                    12
+                    {{ $totalRequest }}
                 </h2>
 
                 <p class="text-[14px] mt-2 text-white/80">
@@ -137,7 +136,7 @@
             <div class="bg-gradient-to-br from-[#F59E0B] to-[#FDBA74] rounded-3xl p-5 text-white shadow-lg">
 
                 <h2 class="text-4xl font-bold">
-                    5
+                    {{ $menunggu }}
                 </h2>
 
                 <p class="text-sm mt-1 opacity-90">
@@ -149,7 +148,7 @@
             <div class="bg-gradient-to-br from-[#3B82F6] to-[#60A5FA] rounded-3xl p-5 text-white shadow-lg">
 
                 <h2 class="text-4xl font-bold">
-                    3
+                    {{ $diproses }}
                 </h2>
 
                 <p class="text-sm mt-1 opacity-90">
@@ -161,7 +160,7 @@
             <div class="bg-gradient-to-br from-[#00C853] to-[#69F0AE] rounded-3xl p-5 text-white shadow-lg">
 
                 <h2 class="text-4xl font-bold">
-                    4
+                    {{ $selesai }}
                 </h2>
 
                 <p class="text-sm mt-1 opacity-90">
@@ -230,7 +229,7 @@
                             </h3>
 
                             <p class="text-[14px] text-slate-500 mt-0.5">
-                                2 paket siap diambil
+                                {{ $menunggu }} paket siap diambil
                             </p>
 
                         </div>
@@ -293,7 +292,7 @@
                             </h3>
 
                             <p class="text-[14px] text-slate-500 mt-0.5">
-                                1 paket sedang diantarkan
+                                {{ $diproses}} paket sedang diantarkan
                             </p>
 
                         </div>
@@ -352,7 +351,7 @@
                             </h3>
 
                             <p class="text-[14px] text-slate-500 mt-0.5">
-                                3 request selesai
+                                {{ $selesai }} request selesai
                             </p>
 
                         </div>

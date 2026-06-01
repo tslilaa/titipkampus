@@ -3,59 +3,62 @@
 namespace App\Http\Controllers;
 
 use App\Models\Request;
-use Illuminate\Support\Facades\Auth;
+use App\Models\Rating;
 
 class DashboardController extends Controller
 {
     public function index()
     {
-        $user = Auth::user();
+        $userId = auth()->id();
 
-        // statistik request user login
+        // TOTAL REQUEST
         $totalRequest = Request::where(
             'pemohon_id',
-            $user->id
+            $userId
         )->count();
 
+        // STATUS REQUEST
         $menunggu = Request::where(
             'pemohon_id',
-            $user->id
+            $userId
         )
         ->where('status', 'menunggu')
         ->count();
 
         $diproses = Request::where(
             'pemohon_id',
-            $user->id
+            $userId
         )
         ->where('status', 'diproses')
         ->count();
 
         $selesai = Request::where(
             'pemohon_id',
-            $user->id
+            $userId
         )
         ->where('status', 'selesai')
         ->count();
 
-        // request terbaru
-        $recentRequests = Request::with([
-            'kategori',
-            'lokasiAwal',
-            'lokasiTujuan'
-        ])
-        ->where('pemohon_id', $user->id)
+        // RATING
+        $avgRating = Rating::avg('bintang');
+
+        // AKTIVITAS TERBARU
+        $recentRequests = Request::where(
+            'pemohon_id',
+            $userId
+        )
         ->latest()
-        ->take(3)
+        ->take(5)
         ->get();
 
         return view('dashboard', compact(
-            'user',
             'totalRequest',
             'menunggu',
             'diproses',
             'selesai',
+            'avgRating',
             'recentRequests'
         ));
     }
 }
+

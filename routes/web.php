@@ -5,7 +5,9 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\RequestController;
-
+use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\RatingController;
+use App\Models\Rating;
 
 Route::get('/', [AuthController::class, 'showLogin'])
     ->name('login');
@@ -42,18 +44,27 @@ Route::get('/chat-detail', function () {
     return view('chat-detail');
 });
 
-Route::get('/rating', function () {
-    return view('rating');
+Route::middleware('auth')->group(function () {
+
+    Route::get(
+        '/rating-review',
+        [RatingController::class, 'index']
+    );
+
+    Route::get(
+        '/rating/{request}',
+        [RatingController::class, 'show']
+    );
+
+    Route::post(
+        '/rating/{request}',
+        [RatingController::class, 'store']
+    );
 });
 
-Route::get('/rating-review', function () {
-    return view('rating-review');
-});
-
-Route::get('/notifikasi', function () {
-    return view('notifikasi');
-});
-
+Route::get('/notifikasi',
+    [NotificationController::class, 'index']
+)->middleware('auth');
 
 
 Route::get('/riwayat', function () {

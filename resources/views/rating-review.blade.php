@@ -152,88 +152,70 @@
 
                 <div class="space-y-5">
 
-                    <!-- CARD -->
-                    <div class="bg-white
-                            rounded-[30px]
-                            p-5
-                            border border-slate-100
-                            shadow-[0_8px_24px_rgba(15,23,42,0.04)]">
+                    @foreach($ratings as $rating)
 
-                        <div class="flex justify-between gap-4">
+                        <div class="bg-white
+                                    rounded-[30px]
+                                    p-5
+                                    border border-slate-100
+                                    shadow-[0_8px_24px_rgba(15,23,42,0.04)]">
 
-                            <div class="flex gap-4">
+                            <div class="flex justify-between gap-4">
 
-                                <img
-                                    src="https://randomuser.me/api/portraits/women/44.jpg"
-                                    class="w-14 h-14 rounded-full object-cover shrink-0">
+                                <div class="flex gap-4">
 
-                                <div>
+                                    <img
+                                        src="https://randomuser.me/api/portraits/women/44.jpg"
+                                        class="w-14 h-14 rounded-full object-cover shrink-0">
 
-                                    <h3 class="font-semibold text-[17px] text-slate-900">
-                                        Lady Gaga
-                                    </h3>
+                                    <div>
 
-                                    <p class="text-[14px] text-slate-500">
-                                        Titip Makanan
-                                    </p>
+                                        <h3 class="font-semibold text-[17px] text-slate-900">
+                                            {{ $rating->runner?->nama_lengkap }}
+                                        </h3>
 
-                                    <p class="text-[12px] text-slate-400 mt-1">
-                                        12 Mei 2026
-                                    </p>
+                                        <p class="text-[14px] text-slate-500">
+                                            {{ $rating->deskripsi_barang }}
+                                        </p>
+
+                                        <p class="text-[12px] text-slate-400 mt-1">
+                                            {{ $rating->created_at->format('d M Y') }}
+                                        </p>
+
+                                    </div>
+                                </div>
+
+                                <div class="bg-yellow-50
+                                            px-3 py-2
+                                            rounded-2xl
+                                            h-fit
+                                            flex items-center gap-1">
+
+                                    <span class="font-semibold text-slate-800">
+                                        {{ $rating->rating?->bintang ?? 0 }}
+                                    </span>
 
                                 </div>
                             </div>
 
-                            <div class="bg-yellow-50
-                                        px-3 py-2
-                                        rounded-2xl
-                                        h-fit
-                                        flex items-center gap-1">
+                            <div class="bg-slate-50
+                                        rounded-[22px]
+                                        p-4
+                                        mt-4
+                                        text-[14px]
+                                        text-slate-600">
 
-                                <svg xmlns="http://www.w3.org/2000/svg"
-                                     viewBox="0 0 24 24"
-                                     fill="currentColor"
-                                     class="w-4 h-4 text-yellow-400">
+                                {{ $rating->rating?->ulasan ?? 'Belum ada ulasan' }}
 
-                                    <path fill-rule="evenodd"
-                                          d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.006 5.404.434c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.258 5.272c.271 1.136-.964 2.033-1.96 1.425L12 18.354l-4.632 2.825c-.996.608-2.231-.29-1.96-1.425l1.258-5.272-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.434 2.082-5.005z"/>
-                                </svg>
-
-                                <span class="font-semibold text-slate-800">
-                                    5.0
-                                </span>
                             </div>
 
                         </div>
 
-                        <div class="flex gap-1 mt-4">
-
-                            @for($i = 0; $i < 5; $i++)
-                                <svg xmlns="http://www.w3.org/2000/svg"
-                                     viewBox="0 0 24 24"
-                                     fill="currentColor"
-                                     class="w-5 h-5 text-yellow-400">
-
-                                    <path fill-rule="evenodd"
-                                          d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.006 5.404.434c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.258 5.272c.271 1.136-.964 2.033-1.96 1.425L12 18.354l-4.632 2.825c-.996.608-2.231-.29-1.96-1.425l1.258-5.272-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.434 2.082-5.005z"/>
-                                </svg>
-                            @endfor
-
-                        </div>
-
-                        <div class="bg-slate-50
-                                    rounded-[22px]
-                                    p-4
-                                    mt-4
-                                    text-[14px]
-                                    text-slate-600">
-
-                            Terima kasih banyak, sangat cepat dan membantu.
-                        </div>
-
-                    </div>
+                    @endforeach
 
                 </div>
+
+
 
 
                 <!-- SUMMARY -->
@@ -253,7 +235,7 @@
 
                         <div>
                             <h3 class="text-[36px] font-bold leading-none">
-                                4.8
+                                {{number_format($avgRating ?? 0, 1)}}
                             </h3>
 
                             <p class="text-[13px] text-white/70 mt-1">
@@ -306,10 +288,10 @@
 
                 </div>
 
-                <!-- CARD -->
-                <div
-                    onclick="editRating()"
-                    class="bg-white
+                @foreach($ratings as $rating)
+
+                <a href="/rating/{{ $rating->id }}"
+                class="block bg-white
                         rounded-[30px]
                         p-5
                         cursor-pointer
@@ -329,43 +311,40 @@
                             <div>
 
                                 <h3 class="font-semibold text-[17px] text-slate-900">
-                                    Justin Helper
+                                    {{ $rating->runner?->nama_lengkap }}
                                 </h3>
 
                                 <p class="text-[14px] text-slate-500">
-                                    Titip Makanan
+                                    {{ $rating->deskripsi_barang }}
                                 </p>
 
                                 <p class="text-[12px] text-slate-400 mt-1">
-                                    12 Mei 2026
+                                    {{ $rating->created_at->format('d M Y') }}
                                 </p>
 
                             </div>
                         </div>
 
-                        <div class="bg-yellow-50 px-3 py-2 rounded-2xl h-fit flex items-center gap-1">
-
-                            <svg xmlns="http://www.w3.org/2000/svg"
-                                 viewBox="0 0 24 24"
-                                 fill="currentColor"
-                                 class="w-4 h-4 text-yellow-400">
-
-                                <path fill-rule="evenodd"
-                                      d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.006 5.404.434c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.258 5.272c.271 1.136-.964 2.033-1.96 1.425L12 18.354l-4.632 2.825c-.996.608-2.231-.29-1.96-1.425l1.258-5.272-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.434 2.082-5.005z"/>
-                            </svg>
+                        <div class="bg-yellow-50 px-3 py-2 rounded-2xl h-fit">
 
                             <span class="font-semibold text-slate-800">
-                                5.0
+                                {{ $rating->rating?->bintang ?? 0 }}
                             </span>
+
                         </div>
 
                     </div>
 
                     <div class="bg-slate-50 rounded-[22px] p-4 mt-4 text-[14px] text-slate-600">
-                        Sangat membantu dan responsif.
+
+                        {{ $rating->rating?->ulasan ?? 'Belum ada ulasan' }}
+
                     </div>
 
-                </div>
+                </a>
+
+                @endforeach
+ 
 
                 <!-- INFO WARNING -->
                 <div class="mt-6
