@@ -4,19 +4,36 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ChatController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\RequestHistoryController;
 use App\Http\Controllers\RequestController;
 
 
-Route::get('/', [AuthController::class, 'showLogin'])
-    ->name('login');
-
+Route::get('/', [AuthController::class, 'showLogin'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
-
 Route::post('/logout', [AuthController::class, 'logout']);
 
-Route::get('/dashboard', [DashboardController::class, 'index']
-)->middleware('auth');
+Route::middleware('auth')->group(function () {
+    
+    // Dashboard
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
+    // Chat Routes
+    Route::get('/chat', [ChatController::class, 'index'])->name('chat.index');
+    Route::get('/chat/{conversation}', [ChatController::class, 'show'])->name('chat.show');
+    Route::post('/chat/{conversation}/send', [ChatController::class, 'send'])->name('chat.send');
+    
+    // Profile & Settings
+    Route::get('/profil', [ProfileController::class, 'index'])->name('profil');
+    Route::get('/pengaturan', [ProfileController::class, 'pengaturan'])->name('pengaturan');
+    
+    // History & Tracking
+    Route::get('/riwayat', [RequestHistoryController::class, 'index'])->name('riwayat');
+    Route::get('/track-lokasi/{id}', [RequestHistoryController::class, 'track'])->name('track.lokasi');
+    
+});
+
+// Stubs for remaining views
 Route::get('/request', function () {
     return view('request');
 });
@@ -31,11 +48,6 @@ Route::get('/detail-req-helper', function () {
 
 Route::get('/detail-req-proses', function () {
     return view('detail-req-proses');
-});
-
-
-Route::get('/track-lokasi', function () {
-    return view('track-lokasi');
 });
 
 Route::get('/chat-detail', function () {
@@ -54,19 +66,6 @@ Route::get('/notifikasi', function () {
     return view('notifikasi');
 });
 
-
-
-Route::get('/riwayat', function () {
-    return view('riwayat');
-});
-
-Route::get('/profil', function () {
-    return view('profil');
-});
-
-Route::get('/pengaturan', function () {
-    return view('pengaturan');
-});
 
 Route::get('/daftar-request', [RequestController::class, 'index'])
     ->middleware('auth')

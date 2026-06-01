@@ -175,12 +175,15 @@
         
         <!-- LOGOUT BUTTON -->
         <div class="mt-8 mb-4 px-2">
-            <button class="w-full bg-red-50 hover:bg-red-100 text-red-500 font-bold py-4 rounded-[20px] transition-colors flex justify-center items-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-5 h-5">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15M12 9l-3 3m0 0 3 3m-3-3h12.75" />
-                </svg>
-                Keluar Akun
-            </button>
+            <form action="/logout" method="POST">
+                @csrf
+                <button type="submit" class="w-full bg-red-50 hover:bg-red-100 text-red-500 font-bold py-4 rounded-[20px] transition-colors flex justify-center items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-5 h-5">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15M12 9l-3 3m0 0 3 3m-3-3h12.75" />
+                    </svg>
+                    Keluar Akun
+                </button>
+            </form>
         </div>
 
     </div>

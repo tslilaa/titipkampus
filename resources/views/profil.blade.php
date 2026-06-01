@@ -59,7 +59,7 @@
         <div class="flex flex-col items-center mt-10 relative z-10">
             <div class="relative">
                 <img
-                    src="https://i.pravatar.cc/150?img=44"
+                    src="{{ $user->foto_profil ? asset('storage/'.$user->foto_profil) : 'https://ui-avatars.com/api/?name='.urlencode($user->nama_lengkap).'&background=7C3AED&color=fff' }}"
                     class="w-28 h-28 rounded-full
                            border-4
                            border-white
@@ -80,11 +80,11 @@
             </div>
 
             <h2 class="text-[28px] font-extrabold mt-5 leading-none tracking-tight">
-                Alisha Jane
+                {{ $user->nama_lengkap }}
             </h2>
 
             <p class="text-white/80 mt-1 text-[14px] font-medium">
-                23080960032
+                {{ $user->nim }}
             </p>
         </div>
         
@@ -108,15 +108,15 @@
 
             <div class="grid grid-cols-3 divide-x divide-gray-100 text-center">
                 <div>
-                    <h2 class="text-[28px] font-bold text-slate-800 leading-none">12</h2>
+                    <h2 class="text-[28px] font-bold text-slate-800 leading-none">{{ $totalRequest }}</h2>
                     <p class="text-gray-400 text-[11px] font-medium mt-1">Request</p>
                 </div>
                 <div>
-                    <h2 class="text-[28px] font-bold text-slate-800 leading-none">4.8</h2>
+                    <h2 class="text-[28px] font-bold text-slate-800 leading-none">{{ $averageRating }}</h2>
                     <p class="text-gray-400 text-[11px] font-medium mt-1">Rating</p>
                 </div>
                 <div>
-                    <h2 class="text-[28px] font-bold text-slate-800 leading-none">24</h2>
+                    <h2 class="text-[28px] font-bold text-slate-800 leading-none">{{ $totalReviews }}</h2>
                     <p class="text-gray-400 text-[11px] font-medium mt-1">Ulasan</p>
                 </div>
             </div>
@@ -134,7 +134,7 @@
                     </div>
                     <span class="font-semibold text-slate-700 text-[14px]">Email Kampus</span>
                 </div>
-                <span class="text-[12px] text-gray-500 font-medium">2308096...</span>
+                <span class="text-[12px] text-gray-500 font-medium">{{ $user->email_kampus }}</span>
             </div>
 
             <div class="flex justify-between items-center p-4 mx-2 border-b border-gray-100">
@@ -146,7 +146,7 @@
                     </div>
                     <span class="font-semibold text-slate-700 text-[14px]">Nomor WA</span>
                 </div>
-                <span class="text-[12px] text-gray-500 font-medium">081562781829</span>
+                <span class="text-[12px] text-gray-500 font-medium">{{ $user->nomor_whatsapp }}</span>
             </div>
 
             <div class="flex justify-between items-center p-4 mx-2 border-b border-gray-100">
@@ -159,7 +159,7 @@
                     </div>
                     <span class="font-semibold text-slate-700 text-[14px]">Fakultas</span>
                 </div>
-                <span class="text-[12px] text-gray-500 font-medium">ISDB FST</span>
+                <span class="text-[12px] text-gray-500 font-medium">-</span>
             </div>
 
             <div class="flex justify-between items-center p-4 mx-2">
@@ -171,7 +171,7 @@
                     </div>
                     <span class="font-semibold text-slate-700 text-[14px]">NIM</span>
                 </div>
-                <span class="text-[12px] text-gray-500 font-medium">23080960032</span>
+                <span class="text-[12px] text-gray-500 font-medium">{{ $user->nim }}</span>
             </div>
 
         </div>
