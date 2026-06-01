@@ -190,97 +190,6 @@
                 </div>
             </div>
 
-            <script>
-                let currentRating = 0;
-
-                function setRating(rating){
-
-                    currentRating = rating;
-
-                    const stars =
-                        document.querySelectorAll('.star-btn');
-
-                    stars.forEach((star,index)=>{
-
-                        const icon =
-                            star.querySelector('.star-icon');
-
-                        if(index < rating){
-
-                            star.classList.remove(
-                                'bg-slate-100'
-                            );
-
-                            star.classList.add(
-                                'bg-yellow-50'
-                            );
-
-                            icon.classList.remove(
-                                'text-slate-300'
-                            );
-
-                            icon.classList.add(
-                                'text-yellow-400'
-                            );
-
-                        }else{
-
-                            star.classList.remove(
-                                'bg-yellow-50'
-                            );
-
-                            star.classList.add(
-                                'bg-slate-100'
-                            );
-
-                            icon.classList.remove(
-                                'text-yellow-400'
-                            );
-
-                            icon.classList.add(
-                                'text-slate-300'
-                            );
-                        }
-                    });
-
-                    const texts = {
-                        1:'Buruk',
-                        2:'Kurang',
-                        3:'Lumayan',
-                        4:'Bagus',
-                        5:'Sangat baik'
-                    };
-
-                    document.getElementById(
-                        'ratingScore'
-                    ).innerText = rating + '.0';
-
-                    document.getElementById(
-                        'ratingText'
-                    ).innerText = texts[rating];
-                }
-
-                function submitRating(){
-
-                    if(currentRating === 0){
-
-                        alert(
-                            'Pilih rating terlebih dahulu'
-                        );
-
-                        return;
-                    }
-
-                    alert(
-                        'Penilaian berhasil dikirim'
-                    );
-
-                    window.location.href =
-                        '/rating-review';
-                }
-            </script>
-
-
             <!-- DIVIDER -->
             <div class="border-t border-slate-200 mb-8"></div>
 
@@ -310,7 +219,9 @@
                         placeholder:text-slate-400
                         focus:ring-4
                         focus:ring-violet-100
-                        transition">Terima kasih banyak! Pengiriman cepat dan helper sangat ramah.</textarea>
+                        transition">{{ request('edit')
+                            ? 'Sangat membantu dan responsif.'
+                            : '' }}</textarea>
 
             </div>
 
@@ -331,7 +242,10 @@
                     hover:scale-[1.01]
                     transition duration-200">
 
-                Kirim Penilaian
+                {{ request('edit')
+                    ? 'Perbarui Penilaian'
+                    : 'Kirim Penilaian' }}
+
             </button>
 
         </div>
@@ -425,6 +339,19 @@
         window.location.href =
             '/rating-review';
     }
+
+    window.onload = () => {
+
+    const isEdit =
+        new URLSearchParams(
+            window.location.search
+        ).get('edit');
+
+    if(isEdit){
+
+        setRating(5);
+    }
+}
 </script>
 </body>
 </html>
