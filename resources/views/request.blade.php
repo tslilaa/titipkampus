@@ -10,8 +10,8 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
 
-        body{
-            font-family:'Poppins',sans-serif;
+        body {
+            font-family: 'Poppins', sans-serif;
         }
     </style>
 </head>
@@ -19,37 +19,57 @@
 <body class="bg-gray-100 flex justify-center items-center min-h-screen py-4">
 
     <!-- Phone -->
-    <div class="w-full max-w-[420px] h-[95vh] bg-[#FAFAFA] rounded-[3rem] shadow-2xl overflow-y-auto px-6 pt-14 pb-10">
+    <div class="relative w-full max-w-[420px] h-[95vh] bg-[#FAFAFA] rounded-[3rem] shadow-2xl overflow-y-auto px-6 pt-14 pb-10">
 
         <!-- Top -->
         <div class="flex items-center mb-8">
-
-            <button class="text-gray-500 mr-5">
+            <a href="{{ url('/daftar-request') }}" class="text-gray-500 mr-5 text-2xl">
                 ☰
-            </button>
+            </a>
 
             <h1 class="text-2xl font-extrabold text-gray-900">
                 Buat Request
             </h1>
         </div>
 
+        @if(session('success'))
+            <div class="mb-5 rounded-2xl border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-700">
+                {{ session('success') }}
+            </div>
+        @endif
+
+        @if ($errors->any())
+            <div class="mb-5 rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+                <ul class="list-disc pl-5 space-y-1">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
         <!-- Form -->
-        <form class="space-y-5">
+        <form action="{{ route('request.store') }}" method="POST" class="space-y-5">
+            @csrf
 
             <!-- Jenis Titipan -->
             <div class="bg-white rounded-2xl p-5 shadow border border-gray-100">
-
                 <label class="block font-bold text-sm text-gray-800 mb-2">
                     Jenis Titipan
                 </label>
 
                 <div class="flex justify-between items-center">
-                    <select class="w-full outline-none text-gray-500 bg-transparent">
-                        <option>Pilih Jenis Titipan</option>
-                        <option>Makanan</option>
-                        <option>Minuman</option>
-                        <option>Dokumen</option>
-                        <option>Paket</option>
+                    <select
+                        name="kategori_id"
+                        class="w-full outline-none text-gray-500 bg-transparent"
+                        required
+                    >
+                        <option value="">Pilih Jenis Titipan</option>
+                        @foreach($categories as $category)
+                            <option value="{{ $category->id }}" @selected(old('kategori_id') == $category->id)>
+                                {{ $category->nama_kategori }}
+                            </option>
+                        @endforeach
                     </select>
 
                     <span>⌄</span>
@@ -58,63 +78,85 @@
 
             <!-- Lokasi Penjemputan -->
             <div class="bg-white rounded-2xl p-5 shadow border border-gray-100">
-
                 <label class="block font-bold text-sm text-gray-800 mb-2">
                     Lokasi Penjemputan
                 </label>
 
-                <input
-                    type="text"
-                    placeholder="Pilih Lokasi Penjemputan"
-                    class="w-full outline-none text-sm text-gray-500"
-                >
+                <div class="flex justify-between items-center">
+                    <select
+                        name="lokasi_awal_id"
+                        class="w-full outline-none text-sm text-gray-500 bg-transparent"
+                        required
+                    >
+                        <option value="">Pilih Lokasi Penjemputan</option>
+                        @foreach($locations as $location)
+                            <option value="{{ $location->id }}" @selected(old('lokasi_awal_id') == $location->id)>
+                                {{ $location->nama_lokasi }}
+                            </option>
+                        @endforeach
+                    </select>
+
+                    <span>⌄</span>
+                </div>
             </div>
 
             <!-- Lokasi Pengantaran -->
             <div class="bg-white rounded-2xl p-5 shadow border border-gray-100">
-
                 <label class="block font-bold text-sm text-gray-800 mb-2">
                     Lokasi Pengantaran
                 </label>
 
-                <input
-                    type="text"
-                    placeholder="Pilih Lokasi Pengantaran"
-                    class="w-full outline-none text-sm text-gray-500"
-                >
+                <div class="flex justify-between items-center">
+                    <select
+                        name="lokasi_tujuan_id"
+                        class="w-full outline-none text-sm text-gray-500 bg-transparent"
+                        required
+                    >
+                        <option value="">Pilih Lokasi Pengantaran</option>
+                        @foreach($locations as $location)
+                            <option value="{{ $location->id }}" @selected(old('lokasi_tujuan_id') == $location->id)>
+                                {{ $location->nama_lokasi }}
+                            </option>
+                        @endforeach
+                    </select>
+
+                    <span>⌄</span>
+                </div>
             </div>
 
             <!-- Deskripsi Barang -->
             <div class="bg-white rounded-2xl p-5 shadow border border-gray-100">
-
                 <label class="block font-bold text-sm text-gray-800 mb-2">
                     Deskripsi Barang
                 </label>
 
                 <textarea
+                    name="deskripsi_barang"
                     rows="3"
                     placeholder="Contoh: charger laptop"
                     class="w-full outline-none text-sm text-gray-500 resize-none"
-                ></textarea>
+                    required
+                >{{ old('deskripsi_barang') }}</textarea>
             </div>
 
             <!-- Estimasi Tip -->
             <div class="bg-white rounded-2xl p-5 shadow border border-gray-100">
-
                 <label class="block font-bold text-sm text-gray-800 mb-2">
                     Estimasi Tip (Rp)
                 </label>
 
                 <input
                     type="number"
-                    placeholder="Contoh: 10.000"
+                    name="nominal_tip"
+                    value="{{ old('nominal_tip') }}"
+                    placeholder="Contoh: 10000"
                     class="w-full outline-none text-sm text-gray-500"
+                    required
                 >
             </div>
 
             <!-- Tips -->
             <div class="bg-purple-100 border border-purple-300 rounded-3xl p-5">
-
                 <h2 class="text-purple-700 font-extrabold text-lg mb-3">
                     Tips
                 </h2>
@@ -133,7 +175,6 @@
             >
                 Buat Request
             </button>
-
         </form>
 
     </div>
