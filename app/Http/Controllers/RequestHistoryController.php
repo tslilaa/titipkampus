@@ -31,10 +31,16 @@ class RequestHistoryController extends Controller
 
     public function track($id)
     {
-        $requestModel = Request::with(['runner', 'lokasiAwal', 'lokasiTujuan'])
-                        ->where('pemohon_id', Auth::id())
-                        ->findOrFail($id);
+        $request = \App\Models\Request::with([
+            'lokasiAwal',
+            'lokasiTujuan',
+            'runner',
+            'pemohon'
+        ])->findOrFail($id);
 
-        return view('track-lokasi', compact('requestModel'));
+        return view(
+            'track-lokasi',
+            compact('request')
+        );
     }
 }

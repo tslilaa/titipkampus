@@ -56,6 +56,20 @@ Route::get(
 ->middleware('auth')
 ->name('request.show');
 
+Route::get(
+    '/detail-helper/{request}',
+    [RequestController::class, 'helperDetail']
+)
+->middleware('auth')
+->name('request.helper');
+
+Route::get(
+    '/detail-request-process/{request}',
+    [RequestController::class, 'processDetail']
+)
+->middleware('auth')
+->name('request.process');
+
 Route::delete(
     '/request/{request}/cancel',
     [RequestController::class, 'cancel']
@@ -64,15 +78,25 @@ Route::delete(
 ->name('request.cancel');
 
 Route::post(
+    '/request/{request}/finish',
+    [RequestController::class, 'finish']
+)
+->middleware('auth')
+->name('request.finish');
+
+Route::post(
     '/request/{request}/take',
     [RequestController::class, 'take']
 )
 ->middleware('auth')
 ->name('request.take');
 
-Route::get('/detail-req-proses', function () {
-    return view('detail-req-proses');
-});
+Route::get(
+    '/request-aktif',
+    [RequestController::class, 'activeRequest']
+)
+->middleware('auth')
+->name('request.active');
 
 Route::get('/chat-detail', function () {
     return view('chat-detail');

@@ -10,29 +10,36 @@ use Illuminate\Support\Facades\Auth;
 
 class RequestController extends Controller
 {
+
     public function index(HttpRequest $httpRequest)
     {
+        $status = $httpRequest->status;
+
         $query = Request::with([
             'kategori',
             'lokasiAwal',
             'lokasiTujuan',
             'pemohon',
             'runner'
-        ])
+        ]);
 
-        // tampilkan request orang lain saja
-        ->where('pemohon_id', '!=', Auth::id())
+        if ($status == 'Taken') {
 
-        // helper cuma lihat request available
-        ->where('status', 'Pending');
+            // request yang aku kerjakan
+            $query->where('runner_id', Auth::id())
+                ->where('status', 'Taken');
 
-        if ($httpRequest->filled('search')) {
+        } elseif ($status == 'Done') {
 
-            $query->where(
-                'deskripsi_barang',
-                'like',
-                '%' . $httpRequest->search . '%'
-            );
+            // request selesai helper
+            $query->where('runner_id', Auth::id())
+                ->where('status', 'Done');
+
+        } else {
+
+            // marketplace request
+            $query->where('pemohon_id', '!=', Auth::id())
+                ->where('status', 'Pending');
         }
 
         $requests = $query
@@ -75,6 +82,30 @@ class RequestController extends Controller
         );
     }
 
+    public function finish(Request $request)
+    {
+        // pastikan helper yang ambil request
+        if ($request->runner_id !== Auth::id()) {
+
+            abort(403);
+        }
+
+        $request->update([
+
+            'status' => 'Done'
+        ]);
+
+        return redirect()
+            ->route(
+                'request.index',
+                ['status' => 'Done']
+            )
+            ->with(
+                'success',
+                'Request selesai.'
+            );
+    }
+
     public function cancel(Request $request)
     {
         if ($request->pemohon_id !== Auth::id()) {
@@ -102,7 +133,16 @@ class RequestController extends Controller
 
     public function take(Request $request)
     {
-        // cuma request pending yang boleh diambil
+        // tidak boleh ambil request sendiri
+        if ($request->pemohon_id === Auth::id()) {
+
+            return back()->with(
+                'error',
+                'Kamu tidak bisa mengambil request sendiri.'
+            );
+        }
+
+        // cuma pending yang bisa diambil
         if ($request->status !== 'Pending') {
 
             return back()->with(
@@ -119,7 +159,104 @@ class RequestController extends Controller
         ]);
 
         return redirect()->route(
-            'request.show',
+            'request.process',
+            $request->id
+        );
+    }
+
+    public function helperDetail(Request $request)
+    {
+        $request->load([
+            'kategori',
+            'lokasiAwal',
+            'lokasiTujuan',
+            'pemohon',
+            'runner'
+        ]);
+
+        $avgRating = 0;
+
+        if ($request->pemohon_id) {
+
+            $avgRating = \App\Models\Rating::whereHas(
+                'request',
+                function ($query) use ($request) {
+
+                    $query->where(
+                        'pemohon_id',
+                        $request->pemohon_id
+                    );
+                }
+            )->avg('bintang') ?? 0;
+        }
+
+        return view(
+            'detail-req-helper',
+            compact('request', 'avgRating')
+        );
+    }
+
+    public function processDetail(Request $request)
+    {
+        $request->load([
+            'kategori',
+            'lokasiAwal',
+            'lokasiTujuan',
+            'pemohon',
+            'runner'
+        ]);
+
+        $avgRating = 0;
+
+        if ($request->pemohon_id) {
+
+            $avgRating = \App\Models\Rating::whereHas(
+                'request',
+                function ($query) use ($request) {
+
+                    $query->where(
+                        'pemohon_id',
+                        $request->pemohon_id
+                    );
+                }
+            )->avg('bintang') ?? 0;
+        }
+
+        return view(
+            'detail-req-proses',
+            compact(
+                'request',
+                'avgRating'
+            )
+        );
+    }
+
+    public function activeRequest()
+    {
+        $request = Request::with([
+            'kategori',
+            'lokasiAwal',
+            'lokasiTujuan',
+            'pemohon',
+            'runner'
+        ])
+        ->where('runner_id', Auth::id())
+        ->where('status', 'Taken')
+        ->latest()
+        ->first();
+
+        if (!$request) {
+
+            return redirect()
+                ->route('request.index')
+                ->with(
+                    'error',
+                    'Tidak ada request aktif.'
+                );
+        }
+
+        return redirect()->route(
+            'request.process',
             $request->id
         );
     }

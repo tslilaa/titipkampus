@@ -24,9 +24,13 @@
         <!-- HEADER -->
         <div class="flex items-center mb-8">
 
-            <button class="text-gray-700 text-2xl mr-4">
-                ←
-            </button>
+            <a
+            href="{{ route('request.index') }}"
+            class="text-gray-700 text-2xl mr-4">
+
+            ←
+
+            </a>
 
             <h1 class="text-2xl font-extrabold text-gray-900">
                 Detail Request
@@ -184,20 +188,16 @@
                 </p>
 
                 <h3 class="font-bold text-gray-900 text-lg">
-                    {{ $request->user->name }}
+                    {{ $request->pemohon->nama_lengkap }}
                 </h3>
 
                 <div class="flex items-center gap-2 mt-1">
                     <span class="text-yellow-500">
-                        {{}}
+                        {{ '⭐' }}
                     </span>
 
                     <span class="font-semibold text-gray-800">
-                        4.8
-                    </span>
-
-                    <span class="text-sm text-gray-400">
-                        (52 Ulasan)
+                        {{ number_format($avgRating, 1) }}
                     </span>
                 </div>
 
@@ -206,11 +206,12 @@
         </div>
 
         <!-- BUTTON -->
+        @if($request->status === 'Pending')
+
         <form
             action="{{ route('request.take', $request->id) }}"
             method="POST"
         >
-
             @csrf
 
             <button
@@ -226,6 +227,22 @@
             </button>
 
         </form>
+
+        @else
+
+        <a
+            href="{{ route('request.process', $request->id) }}"
+            class="block text-center w-full py-4 rounded-2xl
+            text-white font-bold
+            bg-gradient-to-r
+            from-[#7C3AED]
+            to-[#60A5FA]
+            shadow-lg"
+        >
+            Lanjutkan Request
+        </a>
+
+        @endif
 
     </div>
 

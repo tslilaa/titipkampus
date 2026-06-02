@@ -45,6 +45,12 @@
         
         @include('components.sidebar')
 
+        @php
+            $koordinat = explode(',', $request->lokasiTujuan->koordinat_area ?? '-6.9932,110.4211');
+            $lat = trim($koordinat[0] ?? -6.9932);
+            $lng = trim($koordinat[1] ?? 110.4211);
+        @endphp
+
         <div class="flex-1 overflow-y-auto px-6 pt-14 pb-10">
 
             <!-- TOPBAR -->
@@ -86,10 +92,10 @@
                     </div>
                     <div>
                         <h3 class="font-semibold text-slate-800 text-[16px]">
-                            {{ $requestModel->lokasiAwal->nama_lokasi ?? 'Lokasi Awal' }}
+                            {{ $request->lokasiAwal->nama_lokasi ?? 'Lokasi Awal' }}
                         </h3>
                         <p class="text-[13px] text-slate-500">
-                            {{ $requestModel->created_at->format('H.i') }} WIB - Titipan Dibuat
+                            {{ $request->created_at->format('H.i') }} WIB - Titipan Dibuat
                         </p>
                     </div>
                 </div>
@@ -101,7 +107,7 @@
                     </div>
                     <div>
                         <h3 class="font-semibold text-slate-800 text-[16px]">
-                            {{ $requestModel->lokasiTujuan->nama_lokasi ?? 'Lokasi Tujuan' }}
+                            {{ $request->lokasiTujuan->nama_lokasi ?? 'Lokasi Tujuan' }}
                         </h3>
                         <p class="text-[13px] text-slate-500">
                             Lokasi Tujuan
@@ -141,14 +147,18 @@
                 </div>
             </div>
 
-            <!-- MAP -->
-            <div id="map"
-                 class="w-full h-[220px]
-                        rounded-[24px]
-                        shadow-[0_10px_30px_rgba(15,23,42,0.05)]
-                        border border-slate-100
-                        mb-7">
-            </div>
+            <div
+                id="map"
+                class="w-full h-[280px] rounded-[30px] overflow-hidden mb-6"
+            ></div>
+
+            <a
+                href="https://www.google.com/maps?q={{ $lat }},{{ $lng }}"
+                target="_blank"
+                class="mt-3 block text-center bg-[#7C3AED] text-white py-3 rounded-2xl font-semibold"
+            >
+                Buka di Google Maps
+            </a>
 
             <!-- HELPER CARD -->
             <div class="bg-white rounded-[24px]
@@ -158,12 +168,12 @@
 
                 <div class="flex items-center gap-4">
                     <img
-                        src="{{ $requestModel->runner ? ($requestModel->runner->foto_profil ? asset('storage/'.$requestModel->runner->foto_profil) : 'https://ui-avatars.com/api/?name='.urlencode($requestModel->runner->nama_lengkap).'&background=7C3AED&color=fff') : 'https://ui-avatars.com/api/?name=Belum+Ada' }}"
+                        src="{{ $request->runner ? ($request->runner->foto_profil ? asset('storage/'.$request->runner->foto_profil) : 'https://ui-avatars.com/api/?name='.urlencode($request->runner->nama_lengkap).'&background=7C3AED&color=fff') : 'https://ui-avatars.com/api/?name=Belum+Ada' }}"
                         class="w-12 h-12 rounded-full object-cover border-2 border-slate-50">
 
                     <div>
                         <h3 class="font-bold text-slate-800 text-[16px]">
-                            {{ $requestModel->runner ? $requestModel->runner->nama_lengkap : 'Belum ada helper' }}
+                            {{ $request->runner ? $request->runner->nama_lengkap : 'Belum ada helper' }}
                         </h3>
                         <div class="flex items-center gap-1 mt-0.5">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4 text-yellow-400">
@@ -199,11 +209,6 @@
 
     <script>
         // Parse Koordinat (Format "lat,lng" di database atau fallback ke Semarang)
-        @php
-            $koordinat = explode(',', $requestModel->lokasiTujuan->koordinat_area ?? '-6.9932,110.4211');
-            $lat = trim($koordinat[0] ?? -6.9932);
-            $lng = trim($koordinat[1] ?? 110.4211);
-        @endphp
 
         // TUJUAN
         const destination = {
@@ -218,6 +223,9 @@
                 destination.lng
             ], 15);
 
+            alert('MAP BERHASIL DIBUAT');
+            console.log(destination);
+
         // TILE MAP
         L.tileLayer(
             'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
@@ -228,14 +236,23 @@
         ).addTo(map);
 
         // DESTINATION MARKER
-        const destinationMarker =
-            L.marker([
-                destination.lat,
-                destination.lng
-            ])
-            .addTo(map)
-            .bindPopup('Tujuan');
+        const destinationMarker = L.marker([
+            destination.lat,
+            destination.lng
+        ])
+        .addTo(map)
+        .bindPopup('Tujuan');
 
+        destinationMarker.on('click', function () {
+            window.open(
+                'https://www.google.com/maps?q=' +
+                destination.lat +
+                ',' +
+                destination.lng,
+                '_blank'
+            );
+        });
+            
         // DISTANCE CALCULATOR
         function calculateDistance(
             lat1, lon1,
