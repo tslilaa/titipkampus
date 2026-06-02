@@ -49,13 +49,26 @@ Route::middleware('auth')->group(function () {
 
 });
 
-Route::get('/detail-request', function () {
-    return view('detail-request');
-});
+Route::get(
+    '/detail-request/{request}',
+    [RequestController::class, 'show']
+)
+->middleware('auth')
+->name('request.show');
 
-Route::get('/detail-req-helper', function () {
-    return view('detail-req-helper');
-});
+Route::delete(
+    '/request/{request}/cancel',
+    [RequestController::class, 'cancel']
+)
+->middleware('auth')
+->name('request.cancel');
+
+Route::post(
+    '/request/{request}/take',
+    [RequestController::class, 'take']
+)
+->middleware('auth')
+->name('request.take');
 
 Route::get('/detail-req-proses', function () {
     return view('detail-req-proses');

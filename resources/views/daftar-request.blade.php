@@ -22,29 +22,70 @@
 <body class="bg-gray-100 flex justify-center items-center min-h-screen py-4">
 
     <!-- PHONE -->
-    <div class="relative w-full max-w-[420px] h-[95vh]
-                bg-[#FAFAFA]
-                rounded-[3rem]
-                shadow-2xl
-                overflow-hidden
-                flex flex-col">
+    <div class="relative
+            w-full
+            max-w-[420px]
+            h-[95vh]
+            bg-[#F8F8FB]
+            rounded-[3rem]
+            shadow-2xl
+            overflow-hidden
+            flex flex-col">
+
+    @include('components.sidebar')
 
         <!-- HEADER -->
         <div class="px-6 pt-14">
 
             <div class="flex justify-between items-center mb-8">
 
-                <button class="text-2xl text-gray-500">
-                    ☰
+                <button
+                    onclick="openSidebar()"
+                    class="text-slate-600">
+
+                    <svg xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke-width="2.2"
+                        stroke="currentColor"
+                        class="w-7 h-7">
+
+                        <path stroke-linecap="round"
+                            stroke-linejoin="round"
+                            d="M3.75 6.75h16.5M3.75 12h16.5M3.75 17.25h16.5"/>
+                    </svg>
+
                 </button>
 
-                <button class="text-2xl text-gray-500 relative">
-                    🔔
+                <!-- NOTIF -->
+            <a href="/notifikasi"
+            class="text-gray-500 relative block">
 
-                    <span class="absolute top-1 right-1
-                                w-2 h-2 rounded-full bg-red-500">
-                    </span>
-                </button>
+                <svg xmlns="http://www.w3.org/2000/svg"
+                    class="w-7 h-7"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor">
+
+                    <path stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11
+                        a6.002 6.002 0 00-4-5.659V5
+                        a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159
+                        c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1
+                        a3 3 0 11-6 0v-1m6 0H9" />
+                </svg>
+
+                <!-- RED DOT -->
+                <span class="absolute top-0 right-0
+                            w-2.5 h-2.5
+                            bg-red-500
+                            rounded-full
+                            border-2 border-[#FAFAFA]">
+                </span>
+
+            </a>
 
             </div>
 
@@ -171,7 +212,8 @@
 
             @endphp
 
-        <div class="border-b border-gray-200 pb-5">
+        <a href="{{ route('request.show', $request->id) }}"
+        class="block border-b border-gray-200 pb-5">
 
             <div class="flex gap-4">
 
@@ -222,7 +264,7 @@
 
             </div>
 
-        </div>
+        </a>
 
     @endforeach
 

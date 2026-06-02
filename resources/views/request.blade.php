@@ -71,8 +71,6 @@
                             </option>
                         @endforeach
                     </select>
-
-                    <span>⌄</span>
                 </div>
             </div>
 
@@ -95,8 +93,6 @@
                             </option>
                         @endforeach
                     </select>
-
-                    <span>⌄</span>
                 </div>
             </div>
 
@@ -119,8 +115,6 @@
                             </option>
                         @endforeach
                     </select>
-
-                    <span>⌄</span>
                 </div>
             </div>
 

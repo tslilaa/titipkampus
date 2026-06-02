@@ -47,15 +47,15 @@
                 <div>
 
                     <h2 class="font-bold text-gray-900 text-lg">
-                        Titip Es Teh
+                        {{ $request->deskripsi_barang }}
                     </h2>
 
                     <p class="text-sm text-gray-400">
-                        Request ID: #001
+                        Request ID: #{{ str_pad($request->id, 3, '0', STR_PAD_LEFT) }}
                     </p>
 
                     <p class="text-xs text-gray-400 mt-2">
-                        30 menit lalu
+                        {{ $request->created_at->diffForHumans() }}
                     </p>
 
                 </div>
@@ -64,7 +64,7 @@
 
             <!-- STATUS -->
             <span class="bg-gradient-to-r from-[#7C3AED] to-[#60A5FA] text-white px-4 py-2 rounded-xl text-sm font-semibold">
-                Tersedia
+                {{ $request->status }}
             </span>
 
         </div>
@@ -81,7 +81,7 @@
                     </p>
 
                     <h3 class="font-bold text-gray-900">
-                        Minuman
+                        {{ $request->kategori->nama }}
                     </h3>
                 </div>
             </div>
@@ -95,11 +95,11 @@
                     </p>
 
                     <h3 class="font-bold text-gray-900">
-                        Kantin Kampus
+                        {{ $request->lokasiAwal->nama }}
                     </h3>
 
                     <p class="text-sm text-gray-400">
-                        Jl. Walisongo 23
+                        {{ $request->lokasiAwal->alamat }}
                     </p>
                 </div>
             </div>
@@ -113,11 +113,11 @@
                     </p>
 
                     <h3 class="font-bold text-gray-900">
-                        Kos Putri GP 1
+                        {{ $request->lokasiTujuan->nama }}
                     </h3>
 
                     <p class="text-sm text-gray-400">
-                        Jl. Graha Padma
+                        {{ $request->lokasiTujuan->alamat }}
                     </p>
                 </div>
             </div>
@@ -131,7 +131,7 @@
                     </p>
 
                     <h3 class="font-bold text-gray-900">
-                        Beli Es teh tawar 5
+                        {{ $request->deskripsi_barang }}
                     </h3>
                 </div>
             </div>
@@ -145,7 +145,7 @@
                     </p>
 
                     <h3 class="font-bold text-gray-900">
-                        25.000
+                        {{ number_format($request->nominal_tip, 0, ',', '.') }}
                     </h3>
                 </div>
             </div>
@@ -184,12 +184,12 @@
                 </p>
 
                 <h3 class="font-bold text-gray-900 text-lg">
-                    Alisha Jane
+                    {{ $request->user->name }}
                 </h3>
 
                 <div class="flex items-center gap-2 mt-1">
                     <span class="text-yellow-500">
-                        ⭐
+                        {{}}
                     </span>
 
                     <span class="font-semibold text-gray-800">
@@ -206,11 +206,26 @@
         </div>
 
         <!-- BUTTON -->
-        <button
-            class="w-full py-4 rounded-2xl text-white font-bold bg-gradient-to-r from-[#7C3AED] to-[#60A5FA] shadow-lg"
+        <form
+            action="{{ route('request.take', $request->id) }}"
+            method="POST"
         >
-            Ambil Request
-        </button>
+
+            @csrf
+
+            <button
+                type="submit"
+                class="w-full py-4 rounded-2xl
+                text-white font-bold
+                bg-gradient-to-r
+                from-[#7C3AED]
+                to-[#60A5FA]
+                shadow-lg"
+            >
+                Ambil Request
+            </button>
+
+        </form>
 
     </div>
 

@@ -18,13 +18,16 @@ class RequestController extends Controller
             'lokasiTujuan',
             'pemohon',
             'runner'
-        ]);
+        ])
 
-        if ($httpRequest->filled('status')) {
-            $query->where('status', $httpRequest->status);
-        }
+        // tampilkan request orang lain saja
+        ->where('pemohon_id', '!=', Auth::id())
+
+        // helper cuma lihat request available
+        ->where('status', 'Pending');
 
         if ($httpRequest->filled('search')) {
+
             $query->where(
                 'deskripsi_barang',
                 'like',
@@ -36,7 +39,10 @@ class RequestController extends Controller
             ->latest()
             ->get();
 
-        return view('daftar-request', compact('requests'));
+        return view(
+            'daftar-request',
+            compact('requests')
+        );
     }
 
     public function create()
@@ -53,6 +59,71 @@ class RequestController extends Controller
         );
     }
 
+    public function show(Request $request)
+    {
+        $request->load([
+            'kategori',
+            'lokasiAwal',
+            'lokasiTujuan',
+            'pemohon',
+            'runner'
+        ]);
+
+        return view(
+            'detail-request',
+            compact('request')
+        );
+    }
+
+    public function cancel(Request $request)
+    {
+        if ($request->pemohon_id !== Auth::id()) {
+
+            abort(403);
+        }
+
+        if ($request->status !== 'Pending') {
+
+            return back()->with(
+                'error',
+                'Request tidak bisa dibatalkan.'
+            );
+        }
+
+        $request->delete();
+
+        return redirect()
+            ->route('request.index')
+            ->with(
+                'success',
+                'Request berhasil dibatalkan.'
+            );
+    }
+
+    public function take(Request $request)
+    {
+        // cuma request pending yang boleh diambil
+        if ($request->status !== 'Pending') {
+
+            return back()->with(
+                'error',
+                'Request sudah diambil helper lain.'
+            );
+        }
+
+        $request->update([
+
+            'runner_id' => Auth::id(),
+
+            'status' => 'Taken'
+        ]);
+
+        return redirect()->route(
+            'request.show',
+            $request->id
+        );
+    }
+
     public function store(HttpRequest $httpRequest)
     {
         $httpRequest->validate([
@@ -63,7 +134,7 @@ class RequestController extends Controller
             'nominal_tip'      => 'required|integer|min:0',
         ]);
 
-        Request::create([
+        $request = Request::create([
             'pemohon_id'       => Auth::id(),
             'kategori_id'      => $httpRequest->kategori_id,
             'lokasi_awal_id'   => $httpRequest->lokasi_awal_id,
@@ -72,6 +143,13 @@ class RequestController extends Controller
             'nominal_tip'      => $httpRequest->nominal_tip,
             'status'           => 'Pending',
         ]);
+
+        return redirect()
+            ->route('request.show', $request->id)
+            ->with(
+                'success',
+                'Request berhasil dibuat.'
+            );
 
         return redirect()
             ->route('request.index')
