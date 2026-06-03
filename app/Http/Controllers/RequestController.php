@@ -172,8 +172,9 @@ class RequestController extends Controller
 
     public function pemohonProcessDetail(Request $requestModel)
     {
+        // Only allow the person who created the request
         if ($requestModel->pemohon_id != auth()->id()) {
-            abort(403);
+            abort(403, "Akses ditolak");
         }
 
         $requestModel->load([
