@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Request;
 use App\Models\Category;
 use App\Models\Location;
+use App\Models\Conversation;
 use Illuminate\Http\Request as HttpRequest;
 use Illuminate\Support\Facades\Auth;
 
@@ -92,7 +93,8 @@ class RequestController extends Controller
 
         $request->update([
 
-            'status' => 'Done'
+            'status' => 'Done',
+            'completed_at' => now()
         ]);
 
         return redirect()
@@ -156,6 +158,10 @@ class RequestController extends Controller
             'runner_id' => Auth::id(),
 
             'status' => 'Taken'
+        ]);
+
+        Conversation::firstOrCreate([
+            'request_id' => $request->id
         ]);
 
         return redirect()->route(
@@ -222,11 +228,16 @@ class RequestController extends Controller
             )->avg('bintang') ?? 0;
         }
 
+        $conversation = Conversation::firstOrCreate([
+            'request_id' => $request->id
+        ]);
+
         return view(
             'detail-req-proses',
             compact(
                 'request',
-                'avgRating'
+                'avgRating',
+                'conversation'
             )
         );
     }

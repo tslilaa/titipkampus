@@ -17,8 +17,17 @@ class ChatController extends Controller
             'messages',
             'latestMessage'
         ])
-        ->latest()
-        ->get();
+        ->withCount([
+            'unreadMessages as unread_count' => function ($q) {
+                $q->where('sender_id', '!=', Auth::id());
+            }
+        ])
+        ->get()
+        ->sortByDesc(function ($conversation) {
+            return optional(
+                $conversation->latestMessage
+            )->created_at;
+        });
 
         return view('chat', compact('conversations'));
     }
@@ -34,11 +43,47 @@ class ChatController extends Controller
             'messages.sender'
         ]);
 
-        return view('chat-detail', compact('conversation'));
+        $chatClosed = false;
+
+    if (
+        $conversation->request &&
+        $conversation->request->status === 'Done' &&
+        $conversation->request->completed_at &&
+        now()->gt(
+            $conversation->request
+                ->completed_at
+                ->addMinutes(30)
+        )
+    ) {
+        $chatClosed = true;
+    }
+
+        Message::where('conversation_id', $conversation->id)
+            ->where('sender_id', '!=', Auth::id())
+            ->update(['is_read' => true]);
+
+        return view('chat-detail', compact('conversation', 'chatClosed'));
     }
 
     public function send(Request $request, Conversation $conversation)
     {
+        if (
+            $conversation->request &&
+            $conversation->request->status === 'Done' &&
+            $conversation->request->completed_at &&
+            now()->gt(
+                $conversation->request
+                    ->completed_at
+                    ->copy()
+                    ->addMinutes(30)
+            )
+        ) {
+            return back()->with(
+                'error',
+                'Percakapan telah ditutup.'
+            );
+        }
+
         $request->merge([
             'message' => trim($request->message)
         ]);

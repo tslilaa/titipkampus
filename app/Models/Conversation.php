@@ -28,4 +28,10 @@ class Conversation extends Model
     return $this->hasOne(Message::class)->latestOfMany();
     }
 
+    public function unreadMessages()
+    {
+        return $this->hasMany(Message::class)
+            ->where('is_read', false);
+    }
+
 }

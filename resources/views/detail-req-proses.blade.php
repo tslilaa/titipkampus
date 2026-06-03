@@ -200,7 +200,7 @@
         <div class="grid grid-cols-2 gap-4 mb-4">
 
             <a
-                href="{{ route('chat.index') }}"
+                href="{{ route('chat.show', $conversation->id) }}"
                 class="border border-[#7C3AED]
                 text-[#7C3AED]
                 font-bold py-4 rounded-2xl

@@ -130,39 +130,58 @@ if (
 <!-- INPUT -->
 <div class="p-5 border-t border-gray-200">
 
-    <form
-        action="{{ route('chat.send', $conversation->id) }}"
-        method="POST">
+@if(!$chatClosed)
 
-        @csrf
+<form
+    action="{{ route('chat.send', $conversation->id) }}"
+    method="POST">
 
-        <div
-            class="flex items-center bg-white rounded-full
-            border border-gray-200 px-5 py-3 shadow-sm">
+    @csrf
 
-            <input
-                id="messageInput"
-                type="text"
-                name="message"
-                placeholder="Ketik pesan..."
-                class="flex-1 outline-none text-sm bg-transparent"
-                required
-            >
+    <div
+        class="flex items-center bg-white rounded-full
+        border border-gray-200 px-5 py-3 shadow-sm">
 
-            <button
-                type="submit"
-                class="text-2xl text-[#7C3AED]">
+        <input
+            id="messageInput"
+            type="text"
+            name="message"
+            placeholder="Ketik pesan..."
+            class="flex-1 outline-none text-sm bg-transparent"
+            required
+        >
 
-                ➤
+        <button
+            type="submit"
+            class="text-2xl text-[#7C3AED]">
+            ➤
+        </button>
 
-            </button>
+    </div>
 
-        </div>
+</form>
 
-    </form>
+@else
+
+<div
+    class="bg-gray-100
+    rounded-2xl
+    p-4
+    text-center">
+
+    <p class="font-semibold text-gray-700">
+        Percakapan Ditutup
+    </p>
+
+    <p class="text-sm text-gray-500 mt-1">
+        Request telah selesai lebih dari 30 menit.
+    </p>
 
 </div>
-```
+
+@endif
+
+</div>
 
 </div>
 <script>

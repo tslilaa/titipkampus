@@ -18,6 +18,11 @@ class Request extends Model
         'deskripsi_barang',
         'nominal_tip',
         'status',
+        'completed_at'
+    ];
+
+    protected $casts = [
+        'completed_at' => 'datetime',
     ];
 
     public function pemohon()

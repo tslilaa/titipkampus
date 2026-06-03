@@ -125,9 +125,9 @@
             <span>Profil</span>
         </a>
 
-        <a href="/Pengaturan"
+        <a href="/pengaturan"
         class="flex items-center gap-3 px-5 py-4 rounded-[20px] transition
-        {{ request()->is('Pengaturan')
+        {{ request()->is('pengaturan')
                 ? 'bg-gradient-to-r from-[#7C3AED] to-[#60A5FA] text-white shadow-lg'
                 : 'text-slate-700 hover:bg-slate-100' }}">
 

@@ -189,11 +189,25 @@
 
                         <div>
 
-                            <h3 class="font-bold text-gray-900">
+                            <h3 class="
+                                {{ $conversation->unread_count > 0
+                                    ? 'font-extrabold text-gray-900'
+                                    : 'font-bold text-gray-900'
+                                }}
+                            ">
                                 {{ $otherUser?->nama_lengkap ?? 'Pengguna' }}
                             </h3>
 
-                            <p class="text-sm text-gray-500 truncate max-w-[180px]">
+                            <p class="
+                                text-sm
+                                truncate
+                                max-w-[180px]
+                                {{
+                                    $conversation->unread_count > 0
+                                    ? 'font-semibold text-gray-900'
+                                    : 'text-gray-500'
+                                }}
+                            ">
                                 {{ $lastMessage?->message ?? 'Belum ada pesan' }}
                             </p>
 
@@ -201,11 +215,33 @@
 
                     </div>
 
-                    <div class="text-right">
+                    <div class="text-right flex flex-col items-end gap-2">
 
                         <p class="text-sm text-gray-400">
                             {{ $lastMessage?->created_at?->format('H:i') }}
                         </p>
+
+                        @if($conversation->unread_count > 0)
+
+                            <span
+                                class="
+                                min-w-[22px]
+                                h-[22px]
+                                px-1
+                                bg-[#7C3AED]
+                                text-white
+                                text-xs
+                                font-bold
+                                rounded-full
+                                flex
+                                items-center
+                                justify-center
+                                "
+                            >
+                                {{ $conversation->unread_count }}
+                            </span>
+
+                        @endif
 
                     </div>
 
