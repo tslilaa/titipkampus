@@ -190,65 +190,6 @@
 
             <div class="space-y-4">
 
-                <!-- MENUNGGU -->
-                <a href="/detail-request"
-                class="flex items-center justify-between
-                        rounded-[24px]
-                        px-3 py-3
-                        hover:bg-slate-50
-                        transition duration-200">
-
-                    <div class="flex items-center gap-4">
-
-                        <div class="w-[52px] h-[52px]
-                                    rounded-[18px]
-                                    bg-gradient-to-br
-                                    from-pink-500
-                                    to-pink-400
-                                    flex items-center justify-center
-                                    shadow-[0_8px_20px_rgba(236,72,153,0.25)]">
-
-                            <svg xmlns="http://www.w3.org/2000/svg"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke-width="2.2"
-                                stroke="currentColor"
-                                class="w-6 h-6 text-white">
-
-                                <path stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.992 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865A8.25 8.25 0 0117.834 6.165l3.181 3.182"/>
-                            </svg>
-
-                        </div>
-
-                        <div>
-
-                            <h3 class="font-semibold text-slate-800 text-[18px]">
-                                Menunggu Pengambilan
-                            </h3>
-
-                            <p class="text-[14px] text-slate-500 mt-0.5">
-                                {{ $menunggu }} paket siap diambil
-                            </p>
-
-                        </div>
-                    </div>
-
-                    <svg xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke-width="2.2"
-                        stroke="currentColor"
-                        class="w-5 h-5 text-slate-300">
-
-                        <path stroke-linecap="round"
-                            stroke-linejoin="round"
-                            d="m9 18 6-6-6-6"/>
-                    </svg>
-                </a>
-
-
                 <!-- DALAM PERJALANAN -->
                 @php
                     $activeRequest = \App\Models\Request::where('pemohon_id', auth()->id())->where('status', 'On Way')->first();
@@ -295,7 +236,11 @@
                             </h3>
 
                             <p class="text-[14px] text-slate-500 mt-0.5">
-                                {{ $diproses}} paket sedang diantarkan
+                            @if($diproses > 0)    
+                            {{ $diproses}} paket sedang diantarkan
+                            @else
+                            Tidak ada paket yang sedang diantarkan
+                            @endif
                             </p>
 
                         </div>
@@ -354,7 +299,11 @@
                             </h3>
 
                             <p class="text-[14px] text-slate-500 mt-0.5">
-                                {{ $selesai }} request selesai
+                                @if($selesai > 0)
+                                    {{ $selesai }} request selesai
+                                @else
+                                    Tidak ada request yang selesai
+                                @endif
                             </p>
 
                         </div>
@@ -384,13 +333,13 @@
                 Menu Request
             </h2>
 
-            <div class="grid grid-cols-4 gap-4 text-center">
+            <div class="grid grid-cols-3 gap-4 text-center">
 
             <!-- BUAT REQUEST -->
             <a href="/request"
             class="flex flex-col items-center group">
 
-                <div class="w-14 h-14 rounded-[20px]
+                <div class="w-16 h-16 rounded-[20px]
                             bg-gradient-to-br
                             from-[#7C3AED]
                             to-[#60A5FA]
@@ -423,7 +372,7 @@
             <a href="/daftar-request"
             class="flex flex-col items-center group">
 
-                <div class="w-14 h-14 rounded-[20px]
+                <div class="w-16 h-16 rounded-[20px]
                             bg-gradient-to-br
                             from-[#7C3AED]
                             to-[#60A5FA]
@@ -451,45 +400,11 @@
                 </p>
             </a>
 
-
-            <!-- MENUNGGU PENGAMBILAN -->
-            <a href="/detail-request"
-            class="flex flex-col items-center group">
-
-                <div class="w-14 h-14 rounded-[20px]
-                            bg-gradient-to-br
-                            from-[#7C3AED]
-                            to-[#60A5FA]
-                            flex items-center justify-center
-                            shadow-[0_8px_24px_rgba(236,72,153,0.25)]
-                            transition duration-200
-                            group-hover:scale-105">
-
-                    <svg xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke-width="2.2"
-                        stroke="currentColor"
-                        class="w-7 h-7 text-white">
-
-                        <path stroke-linecap="round"
-                            stroke-linejoin="round"
-                            d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.992 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865A8.25 8.25 0 0117.834 6.165l3.181 3.182"/>
-                    </svg>
-
-                </div>
-
-                <p class="text-[11px] text-gray-700 mt-3 leading-tight text-center">
-                    Menunggu Pengambilan
-                </p>
-            </a>
-
-
             <!-- RIWAYAT -->
             <a href="/riwayat"
             class="flex flex-col items-center group">
 
-                <div class="w-14 h-14 rounded-[20px]
+                <div class="w-16 h-16 rounded-[20px]
                             bg-gradient-to-br
                             from-[#7C3AED]
                             to-[#60A5FA]
