@@ -71,6 +71,10 @@
                     Semua
                 </a>
 
+                <a href="{{ route('riwayat', ['status' => 'diproses']) }}" class="px-6 py-2.5 rounded-full {{ $statusFilter == 'diproses' ? 'bg-gradient-to-r from-[#7C3AED] to-[#60A5FA] text-white shadow-[0_4px_12px_rgba(124,58,237,0.25)]' : 'bg-gray-100 hover:bg-gray-200 text-gray-500' }} text-sm font-semibold whitespace-nowrap transition-colors">
+                    Diproses
+                </a>
+
                 <a href="{{ route('riwayat', ['status' => 'selesai']) }}" class="px-6 py-2.5 rounded-full {{ $statusFilter == 'selesai' ? 'bg-gradient-to-r from-[#7C3AED] to-[#60A5FA] text-white shadow-[0_4px_12px_rgba(124,58,237,0.25)]' : 'bg-gray-100 hover:bg-gray-200 text-gray-500' }} text-sm font-semibold whitespace-nowrap transition-colors">
                     Selesai
                 </a>
@@ -86,7 +90,15 @@
         <div class="flex-1 overflow-y-auto px-6 py-6 space-y-4">
 
             @forelse($requests as $req)
-            <div class="bg-white rounded-[24px] p-4 shadow-[0_10px_30px_rgba(15,23,42,0.04)] border border-slate-50 transition hover:shadow-[0_10px_30px_rgba(15,23,42,0.08)] cursor-pointer">
+
+            @if($req->status == 'Taken')
+
+            <a
+                href="{{ route('request.process', $req->id) }}"
+                class="block bg-white rounded-[24px] p-4 shadow-[0_10px_30px_rgba(15,23,42,0.04)] border border-slate-50 transition hover:shadow-[0_10px_30px_rgba(15,23,42,0.08)]"
+            >
+
+            @else
                 <div class="flex gap-4">
                     <div class="w-16 h-16 rounded-[18px] bg-slate-100 flex items-center justify-center text-slate-500 shrink-0">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-8 h-8">
@@ -120,7 +132,8 @@
                         </div>
                     </div>
                 </div>
-            </div>
+                @endif
+            </a>
             @empty
             <div class="text-center py-10">
                 <p class="text-gray-400 text-sm">Belum ada riwayat request.</p>

@@ -16,12 +16,18 @@ class RequestHistoryController extends Controller
                     ->where('pemohon_id', Auth::id())
                     ->latest();
         
-        if ($statusFilter === 'selesai') {
+        if ($statusFilter == 'diproses') {
+
+            $query->where('status', 'Taken');
+
+        } elseif ($statusFilter == 'selesai') {
+
             $query->where('status', 'Done');
-        } elseif ($statusFilter === 'dibatalkan') {
-            // Because there's no 'Canceled' enum, we leave it or map it if it exists
-            // Assuming no canceled status exists in DB yet based on migrations
-            $query->where('status', 'Canceled'); 
+
+        } elseif ($statusFilter == 'dibatalkan') {
+
+            $query->where('status', 'Canceled');
+
         }
 
         $requests = $query->get();
