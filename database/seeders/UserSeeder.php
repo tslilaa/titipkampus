@@ -33,6 +33,17 @@ class UserSeeder extends Seeder
             ]
         );
 
+        User::firstOrCreate(
+            [
+                'email_kampus' => 'helper@kampus.ac.id'
+            ],
+            [
+                'nim' => '222222',
+                'nama_lengkap' => 'Helper Kampus',
+                'nomor_whatsapp' => '08123456789',
+                'password' => '123456',
+            ]
+        );
         
     }
 }
