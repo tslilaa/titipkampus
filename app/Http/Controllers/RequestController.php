@@ -170,14 +170,14 @@ class RequestController extends Controller
         );
     }
 
-    public function pemohonProcessDetail(Request $requestModel)
+    public function pemohonProcessDetail(Request $request)
     {
         // Only allow the person who created the request
-        if ($requestModel->pemohon_id != auth()->id()) {
+        if ($request->pemohon_id != auth()->id()) {
             abort(403, "Akses ditolak");
         }
 
-        $requestModel->load([
+        $request->load([
             'runner',
             'lokasiAwal',
             'lokasiTujuan',
@@ -187,7 +187,7 @@ class RequestController extends Controller
         return view(
             'detail-request-pemohon-proses',
             [
-                'request' => $requestModel
+                'request' => $request
             ]
         );
     }

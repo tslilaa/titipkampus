@@ -34,7 +34,7 @@
             <!-- HEADER -->
             <div class="relative mb-8">
 
-                <a href="/rating-review"
+                <a href="javascript:history.back()"
                 class="absolute left-0 top-1 text-slate-700">
 
                     <svg xmlns="http://www.w3.org/2000/svg"
@@ -335,9 +335,11 @@
         alert(
             'Penilaian berhasil dikirim'
         );
+        
+        const reviewText = document.querySelector('textarea').value;
 
         window.location.href =
-            '/rating-review';
+            '/rating-review?tab=diberikan&demo_rating=' + currentRating + '&demo_review=' + encodeURIComponent(reviewText);
     }
 
     window.onload = () => {

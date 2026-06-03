@@ -18,7 +18,7 @@
         <div class="flex items-center mb-8">
 
             <a
-                href="{{ route('riwayat') }}"
+                href="javascript:history.back()"
                 class="text-2xl text-gray-700"
             >
                 ←

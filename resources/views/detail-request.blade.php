@@ -24,7 +24,7 @@
         <!-- HEADER -->
         <div class="flex items-center mb-8">
 
-            <a href="{{ route('request.index') }}"
+            <a href="javascript:history.back()"
                 class="text-gray-700 text-2xl mr-4">
                 ←
             </a>

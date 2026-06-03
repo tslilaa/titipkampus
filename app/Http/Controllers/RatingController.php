@@ -13,18 +13,25 @@ class RatingController extends Controller
     {
         $userId = auth()->id();
 
-        $ratings = Request::with([
-            'rating',
-            'runner'
-        ])
-        ->where('pemohon_id', $userId)
-        ->where('status', 'Done')
-        ->latest()
-        ->get();
+        $ratingsDiberikan = Request::with(['rating', 'runner'])
+            ->where('pemohon_id', $userId)
+            ->where('status', 'Done')
+            ->latest()
+            ->get();
+
+        $ratingsDiterima = Request::with(['rating', 'pemohon'])
+            ->where('runner_id', $userId)
+            ->where('status', 'Done')
+            ->latest()
+            ->get();
+
+        $avgRating = \App\Models\Rating::whereHas('request', function($query) use ($userId) {
+            $query->where('runner_id', $userId);
+        })->avg('bintang') ?? 0;
 
         return view(
             'rating-review',
-            compact('ratings')
+            compact('ratingsDiberikan', 'ratingsDiterima', 'avgRating')
         );
     }
 

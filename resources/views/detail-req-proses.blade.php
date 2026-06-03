@@ -25,7 +25,7 @@
         <div class="flex items-center mb-8">
 
             <a
-                href="{{ route('request.index', ['status' => 'Taken']) }}"
+                href="javascript:history.back()"
                 class="text-gray-700 text-2xl mr-4"
             >
                 ←
