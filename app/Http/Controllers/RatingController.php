@@ -18,7 +18,7 @@ class RatingController extends Controller
             'runner'
         ])
         ->where('pemohon_id', $userId)
-        ->where('status', 'selesai')
+        ->where('status', 'Done')
         ->latest()
         ->get();
 

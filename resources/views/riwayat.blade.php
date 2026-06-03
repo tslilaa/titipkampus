@@ -92,7 +92,15 @@
             @forelse($requests as $req)
 
                 @php
-                    $link = ($req->status == 'Taken') ? route('request.pemohon.process', $req->id) : '#';
+                    if ($req->status == 'Pending') {
+                        $link = route('request.show', $req->id);
+                    } elseif ($req->status == 'Taken' || $req->status == 'On Way') {
+                        $link = route('request.pemohon.process', $req->id);
+                    } elseif ($req->status == 'Done') {
+                        $link = url('/rating/' . $req->id);
+                    } else {
+                        $link = '#';
+                    }
                 @endphp
 
                 <a
