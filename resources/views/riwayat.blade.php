@@ -94,7 +94,7 @@
             @if($req->status == 'Taken')
 
             <a
-                href="{{ route('request.process', $req->id) }}"
+                href="{{ route('request.pemohon.process', $req->id) }}"
                 class="block bg-white rounded-[24px] p-4 shadow-[0_10px_30px_rgba(15,23,42,0.04)] border border-slate-50 transition hover:shadow-[0_10px_30px_rgba(15,23,42,0.08)]"
             >
 

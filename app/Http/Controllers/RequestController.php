@@ -170,6 +170,27 @@ class RequestController extends Controller
         );
     }
 
+    public function pemohonProcessDetail(Request $requestModel)
+    {
+        if ($requestModel->pemohon_id != auth()->id()) {
+            abort(403);
+        }
+
+        $requestModel->load([
+            'runner',
+            'lokasiAwal',
+            'lokasiTujuan',
+            'conversation'
+        ]);
+
+        return view(
+            'detail-request-pemohon-proses',
+            [
+                'request' => $requestModel
+            ]
+        );
+    }
+
     public function helperDetail(Request $request)
     {
         $request->load([

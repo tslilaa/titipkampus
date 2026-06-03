@@ -70,6 +70,12 @@ Route::get(
 ->middleware('auth')
 ->name('request.process');
 
+Route::get(
+    '/detail-request-pemohon/{request}',
+    [RequestController::class, 'pemohonProcessDetail']
+)->middleware('auth')
+->name('request.pemohon.process');
+
 Route::delete(
     '/request/{request}/cancel',
     [RequestController::class, 'cancel']
